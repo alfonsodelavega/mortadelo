@@ -1,0 +1,87 @@
+grammar es.unican.istr.mortadelo.gdm.lang.GdmLang
+    with org.eclipse.xtext.common.Terminals
+
+import "http://www.eclipse.org/emf/2002/Ecore" as ecore
+generate gdmLang "http://www.unican.es/istr/mortadelo/gdm/lang/GdmLang"
+
+Model:
+  (entities+=Entity)*
+  (queries+=Query)*;
+
+Entity:
+  "entity" name=ID "{"
+  (features+=Feature)*
+  "}";
+
+Feature:
+  Attribute | Reference;
+
+Attribute:
+  type=Type name=ID;
+
+Reference:
+  "ref" entity=[Entity]
+  "[" cardinality=CARDINALITY "]"
+  name=ID;
+
+terminal CARDINALITY returns ecore::EString:
+  "*" | ('1'..'9') ('0'..'9')*;
+
+enum Type:
+  NUMBER="number" | TEXT="text" | DATE="date" | BOOLEAN="boolean" | ID="id";
+
+Query:
+  "query" name=ID ":"
+  "select" projections+=AttributeSelection ("," projections+=AttributeSelection)*
+  "from" from=From
+  ("including" joins+=Join ("," joins+=Join)*)?
+  ("where" condition=BooleanExpression)?
+  ("order" "by" orderingAttributes+=AttributeSelection 
+      ("," orderingAttributes+=AttributeSelection)*)?;
+
+AttributeSelection:
+  refAlias=[Alias] "." attribute=[Attribute]
+  ("." function=Function)? ("as" alias=ID)?;
+
+Alias:
+  "as" name=ID;
+
+From:
+  entity=[Entity] alias=Alias;
+
+Join:
+  refAlias=[Alias] ("." refs+=[Reference])+ alias=Alias;
+
+BooleanExpression returns BooleanExpression:
+  AndConjunction;
+
+AndConjunction returns BooleanExpression:
+  OrConjunction ({AndConjunction.left=current} "and" right=OrConjunction)*;
+
+OrConjunction returns BooleanExpression:
+  Primary ({OrConjunction.left=current} "or" right=Primary)*;
+
+Primary returns BooleanExpression:
+  Comparison | '(' AndConjunction ')';
+
+Comparison:
+  {Equality}
+  selection=AttributeSelection '=' value=STRING |
+  {Inequality}
+  selection=AttributeSelection '!=' value=STRING |
+  {MoreThan}
+  selection=AttributeSelection '>' value=STRING |
+  {MoreThanOrEqual}
+  selection=AttributeSelection '>=' value=STRING |
+  {LessThan}
+  selection=AttributeSelection '<' value=STRING |
+  {LessThanOrEqual}
+  selection=AttributeSelection '<=' value=STRING;
+
+Function:
+  DateFunction
+;
+
+DateFunction:
+  "year" | "month" | "day"
+;
