@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/es.unican.istr.mortadelo.columFamilyDataModel/src"
+    modelPluginID="es.unican.istr.mortadelo.columFamilyDataModel" modelName="ColumnFamilyDataModel"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>ColumnFamilyDataModel.ecore</foreignModel>
+  <genPackages prefix="ColumnFamilyDataModel" disposableProviderFactory="true" ecorePackage="ColumnFamilyDataModel.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="ColumnFamilyDataModel.ecore#//PrimitiveType">
+      <genEnumLiterals ecoreEnumLiteral="ColumnFamilyDataModel.ecore#//PrimitiveType/INT"/>
+      <genEnumLiterals ecoreEnumLiteral="ColumnFamilyDataModel.ecore#//PrimitiveType/FLOAT"/>
+      <genEnumLiterals ecoreEnumLiteral="ColumnFamilyDataModel.ecore#//PrimitiveType/DECIMAL"/>
+      <genEnumLiterals ecoreEnumLiteral="ColumnFamilyDataModel.ecore#//PrimitiveType/TEXT"/>
+      <genEnumLiterals ecoreEnumLiteral="ColumnFamilyDataModel.ecore#//PrimitiveType/DATE"/>
+      <genEnumLiterals ecoreEnumLiteral="ColumnFamilyDataModel.ecore#//PrimitiveType/DATETIME"/>
+      <genEnumLiterals ecoreEnumLiteral="ColumnFamilyDataModel.ecore#//PrimitiveType/ID"/>
+      <genEnumLiterals ecoreEnumLiteral="ColumnFamilyDataModel.ecore#//PrimitiveType/BOOLEAN"/>
+    </genEnums>
+    <genClasses ecoreClass="ColumnFamilyDataModel.ecore#//DataModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ColumnFamilyDataModel.ecore#//DataModel/columnFamilies"/>
+    </genClasses>
+    <genClasses ecoreClass="ColumnFamilyDataModel.ecore#//ColumnFamily">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ColumnFamilyDataModel.ecore#//ColumnFamily/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ColumnFamilyDataModel.ecore#//ColumnFamily/columns"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ColumnFamilyDataModel.ecore#//ColumnFamily/keys"/>
+    </genClasses>
+    <genClasses ecoreClass="ColumnFamilyDataModel.ecore#//Column">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ColumnFamilyDataModel.ecore#//Column/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ColumnFamilyDataModel.ecore#//Column/type"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="ColumnFamilyDataModel.ecore#//Type"/>
+    <genClasses ecoreClass="ColumnFamilyDataModel.ecore#//SimpleType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ColumnFamilyDataModel.ecore#//SimpleType/type"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="ColumnFamilyDataModel.ecore#//Collection">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ColumnFamilyDataModel.ecore#//Collection/type"/>
+    </genClasses>
+    <genClasses ecoreClass="ColumnFamilyDataModel.ecore#//List"/>
+    <genClasses ecoreClass="ColumnFamilyDataModel.ecore#//Set"/>
+    <genClasses ecoreClass="ColumnFamilyDataModel.ecore#//Map">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ColumnFamilyDataModel.ecore#//Map/keyType"/>
+    </genClasses>
+    <genClasses ecoreClass="ColumnFamilyDataModel.ecore#//Tuple">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ColumnFamilyDataModel.ecore#//Tuple/types"/>
+    </genClasses>
+    <genClasses ecoreClass="ColumnFamilyDataModel.ecore#//UserDefinedType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ColumnFamilyDataModel.ecore#//UserDefinedType/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ColumnFamilyDataModel.ecore#//UserDefinedType/fields"/>
+    </genClasses>
+    <genClasses ecoreClass="ColumnFamilyDataModel.ecore#//Field">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ColumnFamilyDataModel.ecore#//Field/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference ColumnFamilyDataModel.ecore#//Field/type"/>
+    </genClasses>
+    <genClasses ecoreClass="ColumnFamilyDataModel.ecore#//Key">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference ColumnFamilyDataModel.ecore#//Key/column"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute ColumnFamilyDataModel.ecore#//Key/position"/>
+    </genClasses>
+    <genClasses ecoreClass="ColumnFamilyDataModel.ecore#//PartitionKey"/>
+    <genClasses ecoreClass="ColumnFamilyDataModel.ecore#//ClusteringKey"/>
+  </genPackages>
+</genmodel:GenModel>

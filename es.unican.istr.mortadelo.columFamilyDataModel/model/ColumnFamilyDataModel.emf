@@ -1,0 +1,72 @@
+@namespace(uri="http://columnFamilyDataModel.mortadelo.istr.unican.es",
+    prefix="columnFamilyDataModel")
+package columnFamilyDataModel;
+
+class DataModel {
+  val ColumnFamily[*] columnFamilies;
+}
+
+class ColumnFamily {
+  attr String[1] name;
+  val Column[*] columns;
+  val Key[*] keys;
+}
+
+class Column {
+  attr String[1] name;
+  val Type[1] type;
+}
+
+abstract class Type {
+}
+
+class SimpleType extends Type {
+    attr PrimitiveType[1] type;
+}
+
+abstract class Collection extends Type {
+  attr PrimitiveType[1] type;
+}
+
+class List extends Collection {
+}
+
+class Set extends Collection {
+}
+
+class Map extends Collection {
+  attr PrimitiveType[1] keyType;
+}
+
+class Tuple extends Type {
+  attr PrimitiveType[*] types;
+}
+
+class UserDefinedType extends Type {
+  attr String[1] name;
+  val Field[*] fields;
+}
+
+class Field {
+  attr String[1] name;
+  val Type[1] type;
+}
+
+class Key {
+  ref Column[1] column;
+  attr int[1] position;
+}
+
+class PartitionKey extends Key {
+}
+
+class ClusteringKey extends Key {
+}
+
+enum PrimitiveType {
+  INT; FLOAT; DECIMAL;
+  TEXT;
+  DATE; DATETIME;
+  ID;
+  BOOLEAN;
+}
