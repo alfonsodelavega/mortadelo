@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<genmodel:GenModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore"
+    xmlns:genmodel="http://www.eclipse.org/emf/2002/GenModel" modelDirectory="/es.unican.istr.mortadelo.cassandraDataModel/src"
+    modelPluginID="es.unican.istr.mortadelo.cassandraDataModel" modelName="Cassandra"
+    rootExtendsClass="org.eclipse.emf.ecore.impl.MinimalEObjectImpl$Container" importerID="org.eclipse.emf.importer.ecore"
+    complianceLevel="8.0" copyrightFields="false" operationReflection="true" importOrganizing="true">
+  <foreignModel>cassandra.ecore</foreignModel>
+  <genPackages prefix="Cassandra" disposableProviderFactory="true" ecorePackage="cassandra.ecore#/">
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="cassandra.ecore#//CollectionType">
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//CollectionType/MAP"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//CollectionType/SET"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//CollectionType/LIST"/>
+    </genEnums>
+    <genEnums typeSafeEnumCompatible="false" ecoreEnum="cassandra.ecore#//PrimitiveType">
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/TINYINT"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/SMALLINT"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/INT"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/BIGINT"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/VARINT"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/FLOAT"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/DOUBLE"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/DECIMAL"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/TEXT"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/VARCHAR"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/ASCII"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/TIMESTAMP"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/DATE"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/TIME"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/UUID"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/TIMEUUID"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/BOOLEAN"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/BLOB"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/INET"/>
+      <genEnumLiterals ecoreEnumLiteral="cassandra.ecore#//PrimitiveType/COUNTER"/>
+    </genEnums>
+    <genClasses image="false" ecoreClass="cassandra.ecore#//NamedElement">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute cassandra.ecore#//NamedElement/name"/>
+    </genClasses>
+    <genClasses ecoreClass="cassandra.ecore#//DataModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference cassandra.ecore#//DataModel/keySpaces"/>
+    </genClasses>
+    <genClasses ecoreClass="cassandra.ecore#//KeySpace">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference cassandra.ecore#//KeySpace/columnFamilies"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="cassandra.ecore#//ColumnFamily">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference cassandra.ecore#//ColumnFamily/columns"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference cassandra.ecore#//ColumnFamily/indexes"/>
+    </genClasses>
+    <genClasses ecoreClass="cassandra.ecore#//Table"/>
+    <genClasses ecoreClass="cassandra.ecore#//MaterializedView">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference cassandra.ecore#//MaterializedView/baseTable"/>
+    </genClasses>
+    <genClasses ecoreClass="cassandra.ecore#//Column">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference cassandra.ecore#//Column/type"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference cassandra.ecore#//Column/keys"/>
+    </genClasses>
+    <genClasses image="false" ecoreClass="cassandra.ecore#//Type"/>
+    <genClasses ecoreClass="cassandra.ecore#//SimpleType">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute cassandra.ecore#//SimpleType/type"/>
+    </genClasses>
+    <genClasses ecoreClass="cassandra.ecore#//Collection">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute cassandra.ecore#//Collection/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute cassandra.ecore#//Collection/collectionType"/>
+    </genClasses>
+    <genClasses ecoreClass="cassandra.ecore#//Tuple">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute cassandra.ecore#//Tuple/types"/>
+    </genClasses>
+    <genClasses ecoreClass="cassandra.ecore#//UserDefinedType">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference cassandra.ecore#//UserDefinedType/fields"/>
+    </genClasses>
+    <genClasses ecoreClass="cassandra.ecore#//Field">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference cassandra.ecore#//Field/type"/>
+    </genClasses>
+    <genClasses ecoreClass="cassandra.ecore#//Key">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute cassandra.ecore#//Key/position"/>
+    </genClasses>
+    <genClasses ecoreClass="cassandra.ecore#//PartitionKey"/>
+    <genClasses ecoreClass="cassandra.ecore#//ClusteringKey"/>
+    <genClasses ecoreClass="cassandra.ecore#//Index">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference cassandra.ecore#//Index/columns"/>
+    </genClasses>
+  </genPackages>
+</genmodel:GenModel>
