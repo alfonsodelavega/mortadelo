@@ -1,0 +1,86 @@
+@namespace(uri="http://mongodb.mortadelo.istr.unican.es",
+    prefix="mongodb")
+package mongodb;
+
+abstract class NamedElement {
+  attr String[1] name;
+}
+
+class Database extends NamedElement {
+  val Collection[*] collections;
+  val Index[*] indexes;
+}
+
+class Collection extends NamedElement {
+  val SchemaObject[1] schema;
+}
+
+class SchemaElement extends NamedElement {
+  attr String description;
+}
+
+class SchemaObject extends SchemaElement {
+  attr Boolean admitsAdditionalProperties;
+  val SchemaElement[*] properties;
+}
+
+abstract class PrimitiveField extends SchemaElement {
+
+}
+
+class NumberField extends PrimitiveField {
+  attr String minimum;
+  attr String maximum;
+  attr Boolean exclusiveMinimum;
+  attr Boolean exclusiveMaximum;
+}
+
+class StringField extends PrimitiveField {
+  attr String minLength;
+  attr String maxLength;
+}
+
+class DateField extends PrimitiveField {
+
+}
+
+class TimestampField extends PrimitiveField {
+
+}
+
+class BooleanField extends PrimitiveField {
+
+}
+
+class IdField extends PrimitiveField {
+
+}
+
+class EnumField extends SchemaElement {
+  val Value[*] values;
+}
+
+class Value {
+  attr EnumType[1] type;
+  attr String[1] value;
+}
+
+class ArrayField extends SchemaElement {
+  attr Integer minItems;
+  attr Integer maxItems;
+  val SchemaObject itemsType;
+}
+
+enum EnumType {
+  BOOLEAN;NUMBER;TEXT;
+}
+
+class Index extends NamedElement {
+  attr Boolean[1] isUnique = false;
+  val IndexField[+] fields;
+}
+
+class IndexField {
+  attr boolean isAscending = true;
+  ref PrimitiveField field;
+}
