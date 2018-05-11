@@ -24,8 +24,6 @@ class PrimitiveField extends SchemaElement {
 }
 
 class ArrayField extends SchemaElement {
-  attr Integer minItems;
-  attr Integer maxItems;
   val SchemaElement[1] type;
 }
 
