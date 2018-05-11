@@ -8,23 +8,29 @@ class DataModel {
 
 class Collection {
   attr String[1] name;
-  val DocumentSchema[1] schema;
+  val Document[1] document;
+  val Index[*] indexes;
 }
 
-abstract class SchemaElement {
+abstract class Field {
   attr String[1] name;
 }
 
-class DocumentSchema extends SchemaElement {
-  val SchemaElement[*] fields;
+class Index {
+  attr String[1] name;
+  ref Field[+] fields;
 }
 
-class PrimitiveField extends SchemaElement {
+class Document extends Field {
+  val Field[*] fields;
+}
+
+class PrimitiveField extends Field {
   attr PrimitiveType[1] type;
 }
 
-class ArrayField extends SchemaElement {
-  val SchemaElement[1] type;
+class ArrayField extends Field {
+  val Field[*] types;
 }
 
 enum PrimitiveType {
