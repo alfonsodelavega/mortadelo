@@ -64,9 +64,9 @@ class ClusteringKey extends Key {
 }
 
 enum PrimitiveType {
-  INT; FLOAT; DECIMAL;
+  INT; FLOAT;
   TEXT;
-  DATE; DATETIME;
+  DATE; TIMESTAMP;
   ID;
   BOOLEAN;
 }

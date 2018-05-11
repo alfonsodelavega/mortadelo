@@ -11,7 +11,7 @@
       <package
             uri="http://columnFamilyDataModel.mortadelo.istr.unican.es"
             class="columnFamilyDataModel.ColumnFamilyDataModelPackage"
-            genModel="model/ColumnFamilyDataModel.genmodel"/>
+            genModel="model/columnFamilyDataModel.genmodel"/>
    </extension>
 
 </plugin>

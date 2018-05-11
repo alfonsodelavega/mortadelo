@@ -2,19 +2,17 @@
     prefix="documentalDataModel")
 package documentalDataModel;
 
-abstract class NamedElement {
-  attr String[1] name;
-}
-
 class DataModel {
   val Collection[*] collections;
 }
 
-class Collection extends NamedElement {
+class Collection {
+  attr String[1] name;
   val DocumentSchema[1] schema;
 }
 
-class SchemaElement extends NamedElement {
+abstract class SchemaElement {
+  attr String[1] name;
 }
 
 class DocumentSchema extends SchemaElement {
@@ -22,13 +20,13 @@ class DocumentSchema extends SchemaElement {
 }
 
 class PrimitiveField extends SchemaElement {
-  attr PrimitiveType type;
+  attr PrimitiveType[1] type;
 }
 
 class ArrayField extends SchemaElement {
   attr Integer minItems;
   attr Integer maxItems;
-  val SchemaElement type;
+  val SchemaElement[1] type;
 }
 
 enum PrimitiveType {
