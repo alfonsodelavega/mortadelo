@@ -1,0 +1,40 @@
+@namespace(uri="http://documentalDataModel.mortadelo.istr.unican.es",
+    prefix="documentalDataModel")
+package documentalDataModel;
+
+abstract class NamedElement {
+  attr String[1] name;
+}
+
+class DataModel {
+  val Collection[*] collections;
+}
+
+class Collection extends NamedElement {
+  val DocumentSchema[1] schema;
+}
+
+class SchemaElement extends NamedElement {
+}
+
+class DocumentSchema extends SchemaElement {
+  val SchemaElement[*] fields;
+}
+
+class PrimitiveField extends SchemaElement {
+  attr PrimitiveType type;
+}
+
+class ArrayField extends SchemaElement {
+  attr Integer minItems;
+  attr Integer maxItems;
+  val SchemaElement type;
+}
+
+enum PrimitiveType {
+  INT; FLOAT;
+  TEXT;
+  DATE; TIMESTAMP;
+  BOOLEAN;
+  ID;
+}
