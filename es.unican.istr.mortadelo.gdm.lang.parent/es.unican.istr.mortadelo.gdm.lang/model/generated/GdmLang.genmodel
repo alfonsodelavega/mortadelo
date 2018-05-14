@@ -36,7 +36,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GdmLang.ecore#//Query/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Query/projections"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Query/from"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Query/joins"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Query/inclusions"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Query/condition"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Query/orderingAttributes"/>
     </genClasses>
@@ -53,10 +53,10 @@
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GdmLang.ecore#//From/entity"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//From/alias"/>
     </genClasses>
-    <genClasses ecoreClass="GdmLang.ecore#//Join">
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Join/refAlias"/>
-      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Join/refs"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Join/alias"/>
+    <genClasses ecoreClass="GdmLang.ecore#//Inclusion">
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Inclusion/refAlias"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Inclusion/refs"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Inclusion/alias"/>
     </genClasses>
     <genClasses ecoreClass="GdmLang.ecore#//BooleanExpression"/>
     <genClasses ecoreClass="GdmLang.ecore#//Comparison">

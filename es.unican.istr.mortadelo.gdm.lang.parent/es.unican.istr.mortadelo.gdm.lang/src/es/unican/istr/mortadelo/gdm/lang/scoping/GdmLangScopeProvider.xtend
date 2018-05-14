@@ -10,7 +10,7 @@ import es.unican.istr.mortadelo.gdm.lang.gdmLang.BooleanExpression
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.Entity
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.From
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.GdmLangPackage
-import es.unican.istr.mortadelo.gdm.lang.gdmLang.Join
+import es.unican.istr.mortadelo.gdm.lang.gdmLang.Inclusion
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.Model
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.Query
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.Reference
@@ -35,8 +35,8 @@ class GdmLangScopeProvider extends AbstractGdmLangScopeProvider {
         if (query.from !== null && query.from.alias !== null) {
           aliases.add(query.from.alias)
         }
-        aliases.addAll(query.joins.filter(j | j.alias !== null)
-                                  .map[j | j.alias])
+        aliases.addAll(query.inclusions.filter(j | j.alias !== null)
+                                       .map[j | j.alias])
         return Scopes.scopeFor(aliases)
       } else if (reference == GdmLangPackage.Literals.ATTRIBUTE_SELECTION__ATTRIBUTE) {
         if ((context as AttributeSelection).refAlias !== null) {
@@ -48,18 +48,18 @@ class GdmLangScopeProvider extends AbstractGdmLangScopeProvider {
         }
       }
     }
-    if (context instanceof Join) {
-      if (reference == GdmLangPackage.Literals.JOIN__REF_ALIAS) {
+    if (context instanceof Inclusion) {
+      if (reference == GdmLangPackage.Literals.INCLUSION__REF_ALIAS) {
         val query = context.eContainer as Query
         val aliases = new ArrayList<Alias>
         if (query.from !== null && query.from.alias !== null) {
           aliases.add(query.from.alias)
         }
-        aliases.addAll(query.joins.filter(j | j.alias !== null)
-                                  .map[j | j.alias])
+        aliases.addAll(query.inclusions.filter(j | j.alias !== null)
+                                       .map[j | j.alias])
         return Scopes.scopeFor(aliases)
-      } else if (reference == GdmLangPackage.Literals.JOIN__REFS
-            && (context as Join).refAlias !== null) {
+      } else if (reference == GdmLangPackage.Literals.INCLUSION__REFS
+            && (context as Inclusion).refAlias !== null) {
         // All refs in the model as scope: this allows wrong reference chains
         //TODO: check the chain is correct in the validator (easier)
         val model = EcoreUtil.getRootContainer(context) as Model
@@ -91,8 +91,8 @@ class GdmLangScopeProvider extends AbstractGdmLangScopeProvider {
     val container = alias.eContainer
     if (container instanceof From) {
         return (container as From).entity
-    } else if (container instanceof Join) {
-      return (container as Join).refs.last.entity
+    } else if (container instanceof Inclusion) {
+      return (container as Inclusion).refs.last.entity
     }
   }
 }

@@ -36,8 +36,8 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="projections" upperBound="-1"
         eType="#//AttributeSelection" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="from" eType="#//From" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="joins" upperBound="-1"
-        eType="#//Join" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="inclusions" upperBound="-1"
+        eType="#//Inclusion" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="condition" eType="#//BooleanExpression"
         containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="orderingAttributes" upperBound="-1"
@@ -57,7 +57,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="alias" eType="#//Alias"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Join">
+  <eClassifiers xsi:type="ecore:EClass" name="Inclusion">
     <eStructuralFeatures xsi:type="ecore:EReference" name="refAlias" eType="#//Alias"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="refs" unique="false" upperBound="-1"
         eType="#//Reference"/>
