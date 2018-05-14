@@ -17,7 +17,7 @@ Feature:
   Attribute | Reference;
 
 Attribute:
-  type=Type name=ID;
+  type=Type name=ID (isUnique?="unique")?;
 
 Reference:
   "ref" entity=[Entity]

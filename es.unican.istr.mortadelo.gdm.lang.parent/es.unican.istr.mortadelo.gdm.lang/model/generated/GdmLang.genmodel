@@ -26,6 +26,7 @@
     </genClasses>
     <genClasses ecoreClass="GdmLang.ecore#//Attribute">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GdmLang.ecore#//Attribute/type"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GdmLang.ecore#//Attribute/isUnique"/>
     </genClasses>
     <genClasses ecoreClass="GdmLang.ecore#//Reference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Reference/entity"/>
