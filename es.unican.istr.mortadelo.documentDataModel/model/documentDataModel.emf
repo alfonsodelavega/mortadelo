@@ -1,6 +1,6 @@
-@namespace(uri="http://documentalDataModel.mortadelo.istr.unican.es",
-    prefix="documentalDataModel")
-package documentalDataModel;
+@namespace(uri="http://documentDataModel.mortadelo.istr.unican.es",
+    prefix="documentDataModel")
+package documentDataModel;
 
 class DataModel {
   val Collection[*] collections;
