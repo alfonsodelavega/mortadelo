@@ -2,7 +2,7 @@
     prefix="columnFamilyDataModel")
 package columnFamilyDataModel;
 
-class DataModel {
+class ColumnFamilyDataModel {
   val ColumnFamily[*] columnFamilies;
 }
 
