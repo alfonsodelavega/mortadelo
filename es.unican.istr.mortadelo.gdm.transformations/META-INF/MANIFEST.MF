@@ -4,4 +4,8 @@ Bundle-Name: Transformations
 Bundle-SymbolicName: es.unican.istr.mortadelo.gdm.transformations
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.xtend.core;bundle-version="2.13.0"
+Require-Bundle: org.eclipse.core.runtime;bundle-version="3.13.0",
+ org.eclipse.xtend.core;bundle-version="2.13.0",
+ es.unican.istr.mortadelo.gdm.lang;bundle-version="1.0.0",
+ es.unican.istr.mortadelo.columnFamilyDataModel;bundle-version="1.0.0",
+ org.eclipse.emf.ecore.xmi;bundle-version="2.13.0"
