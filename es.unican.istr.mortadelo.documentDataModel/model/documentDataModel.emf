@@ -2,7 +2,7 @@
     prefix="documentDataModel")
 package documentDataModel;
 
-class DataModel {
+class DocumentDataModel {
   val Collection[*] collections;
 }
 
