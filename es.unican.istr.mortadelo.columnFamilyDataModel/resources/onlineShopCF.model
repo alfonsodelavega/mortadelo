@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="ASCII"?>
+<columnFamilyDataModel:ColumnFamilyDataModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:columnFamilyDataModel="http://columnFamilyDataModel.mortadelo.istr.unican.es">
+  <columnFamilies name="Q1_productById">
+    <columns name="productId">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="ID"/>
+    </columns>
+    <columns name="name">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="TEXT"/>
+    </columns>
+    <columns name="description">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="TEXT"/>
+    </columns>
+    <columns name="price">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="FLOAT"/>
+    </columns>
+    <keys xsi:type="columnFamilyDataModel:PartitionKey" column="//@columnFamilies.0/@columns.0"/>
+  </columnFamilies>
+  <columnFamilies name="Q2_productByNameAndCategory">
+    <columns name="name">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="TEXT"/>
+    </columns>
+    <columns name="description">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="TEXT"/>
+    </columns>
+    <columns name="price">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="FLOAT"/>
+    </columns>
+    <columns name="name">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="TEXT"/>
+    </columns>
+    <keys xsi:type="columnFamilyDataModel:PartitionKey" column="//@columnFamilies.1/@columns.0"/>
+  </columnFamilies>
+  <columnFamilies name="Q3_productsByCategory">
+    <columns name="name">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="TEXT"/>
+    </columns>
+    <columns name="description">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="TEXT"/>
+    </columns>
+    <columns name="price">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="FLOAT"/>
+    </columns>
+    <columns name="name">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="TEXT"/>
+    </columns>
+    <keys xsi:type="columnFamilyDataModel:PartitionKey" column="//@columnFamilies.2/@columns.3"/>
+    <keys xsi:type="columnFamilyDataModel:ClusteringKey" column="//@columnFamilies.2/@columns.2" position="1"/>
+  </columnFamilies>
+  <columnFamilies name="Q4_purchasesWithBills">
+    <columns name="purchaseId">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="ID"/>
+    </columns>
+    <columns name="purchaseDate">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="DATE"/>
+    </columns>
+    <columns name="clientName">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="TEXT"/>
+    </columns>
+    <columns name="billDate">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="DATE"/>
+    </columns>
+    <columns name="billingData">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="TEXT"/>
+    </columns>
+    <keys xsi:type="columnFamilyDataModel:PartitionKey" column="//@columnFamilies.3/@columns.1"/>
+    <keys xsi:type="columnFamilyDataModel:ClusteringKey" column="//@columnFamilies.3/@columns.1" position="1"/>
+  </columnFamilies>
+  <columnFamilies name="Q5_purchasesWithUserAndLines">
+    <columns name="purchaseId">
+      <type xsi:type="columnFamilyDataModel:SimpleType" type="ID"/>
+    </columns>
+    <keys xsi:type="columnFamilyDataModel:PartitionKey"/>
+    <keys xsi:type="columnFamilyDataModel:ClusteringKey" position="1"/>
+  </columnFamilies>
+</columnFamilyDataModel:ColumnFamilyDataModel>
