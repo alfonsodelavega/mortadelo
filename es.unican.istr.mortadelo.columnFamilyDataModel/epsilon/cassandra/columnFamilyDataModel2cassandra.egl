@@ -1,7 +1,7 @@
 [% for (cf in columnFamilyDataModel!ColumnFamily){ %]
-	[%=cf.name%](
+	CREATE TABLE [%=cf.name%](
 	[% for (co in cf.columns){ %]	
-		[%=co.name%] [% if (co.type.type.name=="FLOAT") { %] NUMERIC; [% } %][% else if (co.type.type.name=="ID") { %] UUID; [% } %][% else { %] [%=co.type.type%]; [% } %]
+		[%=co.name%] [% if (co.type.type.name=="FLOAT") { %] NUMERIC, [% } %][% else if (co.type.type.name=="ID") { %] UUID, [% } %][% else { %] [%=co.type.type%], [% } %]
 		[% } %]
 		
 		PRIMARY KEY([% var i = 1; %]
@@ -13,7 +13,7 @@
 			([% for (k in (cf.keys.sortBy(k|k.position)).select(k|k.isTypeOf(PartitionKey))){ %]
 				 [%if (i<cf.keys.select(k|k.isTypeOf(PartitionKey)).size()){ %] [%=k.column.name%], [% } else{ %] [%=k.column.name%] [% } %]
 				 [% i++; %]
-			[% } %]),
+			[%}%]),
 			[% for (k in (cf.keys.sortBy(k|k.position)).select(k|k.isTypeOf(ClusteringKey))){ %]
 				[%if (i<cf.keys.size()){ %] [%=k.column.name%], [% i++;} %] [% else{ %] [%=k.column.name%] [% } %]
 			[% } %]
