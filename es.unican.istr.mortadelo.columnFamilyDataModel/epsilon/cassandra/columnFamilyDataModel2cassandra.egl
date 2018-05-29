@@ -1,6 +1,8 @@
 [% for (cf in columnFamilyDataModel!ColumnFamily){ %]
 	[%=cf.name%](
-	[% for (co in cf.columns){ %] [%=co.name%] [%=co.type.type%]; [% } %]
+	[% for (co in cf.columns){ %]	
+		[%=co.name%] [% if (co.type.type.name=="FLOAT") { %] NUMERIC; [% } %][% else if (co.type.type.name=="ID") { %] UUID; [% } %][% else { %] [%=co.type.type%]; [% } %]
+		[% } %]
 		
 		PRIMARY KEY([% var i = 1; %]
 		[% if(cf.keys.exists(k|k.isKindOf(ClusteringKey))==false){ %]
