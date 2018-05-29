@@ -1,1 +1,12 @@
-Hello Cassandra!
+[% for (cf in columnFamilyDataModel!ColumnFamily){ %]
+	[%=cf.name%](
+	[% for (co in cf.columns){ %]	
+		[%=co.name%] [%=co.type.type%]; [% } %]
+		
+		PRIMARY KEY([% var i = 1; %]
+		[% for (k in cf.keys.sortBy(k|k.position)){ %]
+			[%if (i<cf.keys.size()){ %] [%=k.column.name%], [% i++;} %] [% else{ %] [%=k.column.name%] [% } %]
+		[% } %]
+		)
+	);
+[% } %]
