@@ -1,11 +1,20 @@
 [% for (cf in columnFamilyDataModel!ColumnFamily){ %]
 	[%=cf.name%](
-	[% for (co in cf.columns){ %]	
-		[%=co.name%] [%=co.type.type%]; [% } %]
+	[% for (co in cf.columns){ %] [%=co.name%] [%=co.type.type%]; [% } %]
 		
 		PRIMARY KEY([% var i = 1; %]
-		[% for (k in cf.keys.sortBy(k|k.position)){ %]
-			[%if (i<cf.keys.size()){ %] [%=k.column.name%], [% i++;} %] [% else{ %] [%=k.column.name%] [% } %]
+		[% if(cf.keys.exists(k|k.isKindOf(ClusteringKey))==false){ %]
+			[% for (k in cf.keys.sortBy(k|k.position)){ %]
+				[%if (i<cf.keys.size()){ %] [%=k.column.name%], [% i++;} %] [% else{ %] [%=k.column.name%] [% } %]
+			[% } %]
+		[% } else { %]
+			([% for (k in (cf.keys.sortBy(k|k.position)).select(k|k.isTypeOf(PartitionKey))){ %]
+				 [%if (i<cf.keys.select(k|k.isTypeOf(PartitionKey)).size()){ %] [%=k.column.name%], [% } else{ %] [%=k.column.name%] [% } %]
+				 [% i++; %]
+			[% } %]),
+			[% for (k in (cf.keys.sortBy(k|k.position)).select(k|k.isTypeOf(ClusteringKey))){ %]
+				[%if (i<cf.keys.size()){ %] [%=k.column.name%], [% i++;} %] [% else{ %] [%=k.column.name%] [% } %]
+			[% } %]
 		[% } %]
 		)
 	);
