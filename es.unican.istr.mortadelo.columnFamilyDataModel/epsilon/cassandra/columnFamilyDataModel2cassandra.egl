@@ -1,5 +1,5 @@
 [% for (cf in columnFamilyDataModel!ColumnFamily){ %]
-	CREATE TABLE [%=cf.name%](
+	CREATE TABLE [%=cf.name%]( 
 	[% for (co in cf.columns){ %]	
 		[%=co.name%] [% if (co.type.type.name=="FLOAT") { %] NUMERIC, [% } %][% else if (co.type.type.name=="ID") { %] UUID, [% } %][% else { %] [%=co.type.type%], [% } %]
 		[% } %]
