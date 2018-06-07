@@ -6,7 +6,7 @@ for (cf in columnFamilyDataModel!ColumnFamily){ %]
   [% for (co in cf.columns) { %]
     [%=co.name%] [%=co.getType()%],
   [% } %]
-    PRIMARY KEY(([%=cf.getPartitionKeys()%])[%=cf.getClusteringKeys()%])
+    PRIMARY KEY([%=cf.getPartitionKeys()%][%=cf.getClusteringKeys()%])
   );
 
 [%
