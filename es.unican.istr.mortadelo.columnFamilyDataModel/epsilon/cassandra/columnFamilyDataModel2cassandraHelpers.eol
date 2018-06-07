@@ -1,0 +1,30 @@
+operation Column getType() : String {
+  if (self.type.isTypeOf(SimpleType)) {
+    var primitiveType = self.type.type;
+    if (primitiveType.name == "FLOAT") {
+      return "NUMERIC";
+    } else if (primitiveType.name == "ID") {
+      return "UUID";
+    } else {
+      return primitiveType.name;
+    }
+  }
+}
+
+operation ColumnFamily getPartitionKeys() : String {
+  var partitionKeys = self.keys.select(k | k.isTypeOf(PartitionKey))
+                               .sortBy(k | k.position)
+                               .collect(k | k.column.name);
+  return partitionKeys.concat(", ");
+}
+
+operation ColumnFamily getClusteringKeys() : String {
+  var clusteringKeys = self.keys.select(k | k.isTypeOf(ClusteringKey))
+                                .sortBy(k | k.position)
+                                .collect(k | k.column.name);
+  if (clusteringKeys.isEmpty()) {
+    return "";
+  } else {
+    return ", " + clusteringKeys.concat(", ");
+  }
+}
