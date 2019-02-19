@@ -31,3 +31,9 @@ This tool is in a very early stage of development, so expect bugs and considerab
 3. Generate Xtext artifacts from .xtext grammar of gdm.lang/src.
 
 You can run the Xtext editor with the LaunchRuntimeGdmLang.launch run configuration on gdm.lang.parent project. On the newly opened Eclipse instance, import the gdm.examples project to see a .gdm example of an online shop.
+
+## License
+
+GNU General Public License version 2 or (at your option) any later version.
+
+See LICENSE and LICENSE.gpl-2.0+ for details.
