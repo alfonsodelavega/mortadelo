@@ -8,7 +8,17 @@ Model:
   (entities+=Entity)*
   (queries+=Query)*;
 
+AnnotatedElement:
+  Feature | Entity | Query
+;
+
+Annotation:
+  "@"name=ID
+;
+
+
 Entity:
+  (annotations+=Annotation (annotations+=Annotation)*)?
   "entity" name=ID "{"
   (features+=Feature)*
   "}";
@@ -17,9 +27,11 @@ Feature:
   Attribute | Reference;
 
 Attribute:
+  (annotations+=Annotation (annotations+=Annotation)*)?
   type=Type name=ID (isUnique?="unique")?;
 
 Reference:
+  (annotations+=Annotation (annotations+=Annotation)*)?
   "ref" entity=[Entity]
   "[" cardinality=CARDINALITY "]"
   name=ID;
@@ -31,12 +43,13 @@ enum Type:
   NUMBER="number" | TEXT="text" | DATE="date" | BOOLEAN="boolean" | ID="id";
 
 Query:
+  (annotations+=Annotation (annotations+=Annotation)*)?
   "query" name=ID ":"
   "select" projections+=AttributeSelection ("," projections+=AttributeSelection)*
   "from" from=From
   ("including" inclusions+=Inclusion ("," inclusions+=Inclusion)*)?
   ("where" condition=BooleanExpression)?
-  ("order" "by" orderingAttributes+=AttributeSelection 
+  ("order" "by" orderingAttributes+=AttributeSelection
       ("," orderingAttributes+=AttributeSelection)*)?;
 
 AttributeSelection:
