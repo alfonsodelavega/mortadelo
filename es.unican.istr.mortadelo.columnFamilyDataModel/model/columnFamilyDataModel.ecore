@@ -10,8 +10,10 @@
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="columns" upperBound="-1"
         eType="#//Column" containment="true"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="keys" upperBound="-1" eType="#//Key"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="partitionKeys" lowerBound="1"
+        upperBound="-1" eType="#//PartitionKey" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="clusteringKeys" upperBound="-1"
+        eType="#//ClusteringKey" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Column">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -45,11 +47,9 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//Type"
         containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Key">
+  <eClassifiers xsi:type="ecore:EClass" name="Key" abstract="true">
     <eStructuralFeatures xsi:type="ecore:EReference" name="column" lowerBound="1"
         eType="#//Column"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="position" lowerBound="1"
-        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="PartitionKey" eSuperTypes="#//Key"/>
   <eClassifiers xsi:type="ecore:EClass" name="ClusteringKey" eSuperTypes="#//Key"/>

@@ -9,7 +9,8 @@ class ColumnFamilyDataModel {
 class ColumnFamily {
   attr String[1] name;
   val Column[*] columns;
-  val Key[*] keys;
+  val PartitionKey[+] partitionKeys;
+  val ClusteringKey[*] clusteringKeys;
 }
 
 class Column {
@@ -52,9 +53,8 @@ class Field {
   val Type[1] type;
 }
 
-class Key {
+abstract class Key {
   ref Column[1] column;
-  attr int[1] position;
 }
 
 class PartitionKey extends Key {
