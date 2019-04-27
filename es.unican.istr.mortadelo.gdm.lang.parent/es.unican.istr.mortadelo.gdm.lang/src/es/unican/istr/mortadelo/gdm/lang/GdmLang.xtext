@@ -8,7 +8,7 @@ Model:
   (entities+=Entity)*
   (queries+=Query)*;
 
-AnnotatedElement:
+AnnotatableElement:
   Feature | Entity | Query
 ;
 

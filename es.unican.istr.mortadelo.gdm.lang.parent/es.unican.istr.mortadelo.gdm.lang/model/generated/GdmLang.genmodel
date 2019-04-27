@@ -17,9 +17,9 @@
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Model/entities"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Model/queries"/>
     </genClasses>
-    <genClasses ecoreClass="GdmLang.ecore#//AnnotatedElement">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//AnnotatedElement/annotations"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GdmLang.ecore#//AnnotatedElement/name"/>
+    <genClasses ecoreClass="GdmLang.ecore#//AnnotatableElement">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//AnnotatableElement/annotations"/>
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GdmLang.ecore#//AnnotatableElement/name"/>
     </genClasses>
     <genClasses ecoreClass="GdmLang.ecore#//Annotation">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GdmLang.ecore#//Annotation/name"/>
