@@ -39,7 +39,9 @@ entity Product {
 
 entity Purchase {
   id purchaseId
-  date purchaseDate
+  number year
+  number month
+  number day
   ref Client[1] client
   ref Address[1] shippingAddress
   ref Bill[1] bill
@@ -81,18 +83,30 @@ query Q3_productsByCategory:
   where cat.name = "?"
   order by prod.price
 
+//this had a date -> cambiar seguramente
 query Q4_purchasesWithBills:
-  select pur.purchaseId, pur.purchaseDate, cl.name as clientName,
+  select pur.purchaseId, cl.name as clientName,
          bill.billDate, bill.billingData
   from Purchase as pur
   including pur.bill as bill, pur.client as cl
-  where pur.purchaseDate.year = "?"
-  order by pur.purchaseDate
+  where pur.year = "?"
 
 query Q5_purchasesWithUserAndLines:
   select pur.purchaseId
   from Purchase as pur
   including pur.lines as plines, pur.client as cl
   where cl.nationality = "?"
-  order by pur.purchaseDate
+  order by pur.year
 
+query Q6_clientPurchasesNearChristmas:
+  select client.clientId, client.name, client.nationality,
+         purchases.purchaseId, purchases.year, purchases.month, purchases.day,
+         lines.quantity, lines.unitPrice, product.name, address.postalCode
+  from Client as client
+  including client.purchases as purchases,
+            client.purchases.lines as lines,
+            client.purchases.lines.product as product,
+            client.purchases.shippingAddress as address
+  where client.clientId = "?1" and purchases.year = "?2"
+    and purchases.month >= "10"
+  order by purchases.month, product.price

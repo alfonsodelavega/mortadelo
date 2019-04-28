@@ -16,7 +16,6 @@ Annotation:
   "@"name=ID
 ;
 
-
 Entity:
   (annotations+=Annotation (annotations+=Annotation)*)?
   "entity" name=ID "{"
@@ -53,8 +52,7 @@ Query:
       ("," orderingAttributes+=AttributeSelection)*)?;
 
 AttributeSelection:
-  refAlias=[Alias] "." attribute=[Attribute]
-  ("." function=Function)? ("as" alias=ID)?;
+  refAlias=[Alias] "." attribute=[Attribute] ("as" alias=ID)?;
 
 Alias:
   "as" name=ID;
@@ -90,11 +88,3 @@ Comparison:
   selection=AttributeSelection '<' value=STRING |
   {LessThanOrEqual}
   selection=AttributeSelection '<=' value=STRING;
-
-Function:
-  DateFunction
-;
-
-DateFunction:
-  "year" | "month" | "day"
-;
