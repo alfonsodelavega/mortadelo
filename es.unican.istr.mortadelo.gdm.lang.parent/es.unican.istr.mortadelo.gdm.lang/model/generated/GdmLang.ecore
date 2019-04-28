@@ -8,7 +8,7 @@
     <eStructuralFeatures xsi:type="ecore:EReference" name="queries" upperBound="-1"
         eType="#//Query" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="AnnotatedElement">
+  <eClassifiers xsi:type="ecore:EClass" name="AnnotatableElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="annotations" upperBound="-1"
         eType="#//Annotation" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
@@ -16,11 +16,11 @@
   <eClassifiers xsi:type="ecore:EClass" name="Annotation">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Entity" eSuperTypes="#//AnnotatedElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Entity" eSuperTypes="#//AnnotatableElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="features" upperBound="-1"
         eType="#//Feature" containment="true"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Feature" eSuperTypes="#//AnnotatedElement"/>
+  <eClassifiers xsi:type="ecore:EClass" name="Feature" eSuperTypes="#//AnnotatableElement"/>
   <eClassifiers xsi:type="ecore:EClass" name="Attribute" eSuperTypes="#//Feature">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//Type"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="isUnique" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
@@ -36,7 +36,7 @@
     <eLiterals name="BOOLEAN" value="3" literal="boolean"/>
     <eLiterals name="ID" value="4" literal="id"/>
   </eClassifiers>
-  <eClassifiers xsi:type="ecore:EClass" name="Query" eSuperTypes="#//AnnotatedElement">
+  <eClassifiers xsi:type="ecore:EClass" name="Query" eSuperTypes="#//AnnotatableElement">
     <eStructuralFeatures xsi:type="ecore:EReference" name="projections" upperBound="-1"
         eType="#//AttributeSelection" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="from" eType="#//From" containment="true"/>
@@ -50,7 +50,6 @@
   <eClassifiers xsi:type="ecore:EClass" name="AttributeSelection">
     <eStructuralFeatures xsi:type="ecore:EReference" name="refAlias" eType="#//Alias"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="attribute" eType="#//Attribute"/>
-    <eStructuralFeatures xsi:type="ecore:EAttribute" name="function" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="alias" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Alias">

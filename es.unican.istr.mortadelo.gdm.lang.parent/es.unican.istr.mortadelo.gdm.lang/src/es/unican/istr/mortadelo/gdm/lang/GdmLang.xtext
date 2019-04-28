@@ -8,14 +8,13 @@ Model:
   (entities+=Entity)*
   (queries+=Query)*;
 
-AnnotatedElement:
+AnnotatableElement:
   Feature | Entity | Query
 ;
 
 Annotation:
   "@"name=ID
 ;
-
 
 Entity:
   (annotations+=Annotation (annotations+=Annotation)*)?
@@ -53,8 +52,7 @@ Query:
       ("," orderingAttributes+=AttributeSelection)*)?;
 
 AttributeSelection:
-  refAlias=[Alias] "." attribute=[Attribute]
-  ("." function=Function)? ("as" alias=ID)?;
+  refAlias=[Alias] "." attribute=[Attribute] ("as" alias=ID)?;
 
 Alias:
   "as" name=ID;
@@ -90,11 +88,3 @@ Comparison:
   selection=AttributeSelection '<' value=STRING |
   {LessThanOrEqual}
   selection=AttributeSelection '<=' value=STRING;
-
-Function:
-  DateFunction
-;
-
-DateFunction:
-  "year" | "month" | "day"
-;
