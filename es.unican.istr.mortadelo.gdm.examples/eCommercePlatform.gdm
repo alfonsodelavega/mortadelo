@@ -1,0 +1,132 @@
+/*
+ * E-commerce platform example expressed in the GDM language
+ */
+
+/***********************/
+/* Entities definition */
+/***********************/
+
+entity Client {
+  id clientId
+  text name
+  text nationality
+  ref Purchase[*] purchases
+}
+
+@highlyUpdated
+entity Purchase {
+  id purchaseId
+  number year
+  number month
+  number day
+  number totalAmount
+  ref Address[1] shipAddress
+  ref Bill[1] bill
+  ref PurchaseLine[*] lines
+}
+
+entity Address {
+  text street
+  text postalCode
+  text city
+  text country
+}
+
+entity Bill {
+  id billId
+  date billDate
+  text billingData
+}
+
+entity PurchaseLine {
+  number quantity
+  number unitPrice
+  ref Product[1] product
+}
+
+entity Product {
+  id productId
+  text name
+  text description
+  number price
+  ref Category[*] categories
+  ref Provider[1] provider
+}
+
+entity Category {
+  id categoryId
+  text name
+  text description
+}
+
+entity Provider {
+  id providerId
+  text name
+}
+/**********************/
+/* Queries definition */
+/**********************/
+
+query Q1_productsById:
+  select prod.productId, prod.name,
+         prod.description, prod.price
+  from Product as prod
+  where prod.productId = "?"
+
+query Q2_productsAndCategoryByName:
+  select prod.name, prod.description,
+         prod.price, cat.name
+  from Product as prod
+  including prod.categories as cat
+  where prod.name = "?"
+
+query Q3_productsByCategory:
+  select prod.name, prod.description,
+         prod.price, cat.name
+  from Product as prod
+  including prod.categories as cat
+  where cat.name = "?"
+  order by prod.price
+
+query Q4_clientPurchasesNearChristmas:
+  select client.clientId, client.name, client.nationality,
+         purchases.purchaseId, purchases.year, purchases.month, purchases.day,
+         lines.quantity, lines.unitPrice, product.name, address.postalCode
+  from Client as client
+  including client.purchases as purchases,
+            client.purchases.lines as lines,
+            client.purchases.lines.product as product,
+            client.purchases.shipAddress as address
+  where client.clientId = "?1" and purchases.year = "?2"
+    and purchases.month >= "10"
+  order by purchases.month, product.price
+
+query Q5_purchasesWithBillsByYear:
+  select pur.purchaseId, pur.year,
+         pur.month, pur.totalAmount,
+         bill.billId, bill.billingData
+  from Purchase as pur
+  including pur.bill as bill
+  where pur.year = "?"
+  order by pur.month
+
+query Q6_purchasesByYearWithPostalCode:
+  select pur.purchaseId, pur.year, pur.month,
+         pur.totalAmount, addr.postalCode
+  from Purchase as pur
+  including pur.shipAddress as addr
+  where pur.year = "?"
+  order by pur.month, addr.postalCode
+
+query Q7_clientPurchasesInYearRange:
+  select client.clientId, client.name,
+         purchases.purchaseId, purchases.year,
+         product.name,
+         lines.quantity, lines.unitPrice
+  from Client as client
+  including client.purchases as purchases,
+            purchases.lines as lines,
+            lines.product as product
+  where client.clientId = "?1"
+    and purchases.year = "?2"
+    and purchases.month = "?3"
