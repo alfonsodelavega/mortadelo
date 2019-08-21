@@ -134,7 +134,7 @@
       </right>
     </condition>
     <orderingAttributes refAlias="//@queries.3/@inclusions.0/@alias" attribute="//@entities.1/@features.2"/>
-    <orderingAttributes refAlias="//@queries.3/@inclusions.2/@alias" attribute="//@entities.5/@features.3"/>
+    <orderingAttributes refAlias="//@queries.3/@inclusions.1/@alias" attribute="//@entities.4/@features.1"/>
   </queries>
   <queries name="Q5_purchasesWithBillsByYear">
     <projections refAlias="//@queries.4/@from/@alias" attribute="//@entities.1/@features.0"/>
@@ -177,6 +177,7 @@
     <projections refAlias="//@queries.6/@from/@alias" attribute="//@entities.0/@features.1"/>
     <projections refAlias="//@queries.6/@inclusions.0/@alias" attribute="//@entities.1/@features.0"/>
     <projections refAlias="//@queries.6/@inclusions.0/@alias" attribute="//@entities.1/@features.1"/>
+    <projections refAlias="//@queries.6/@inclusions.0/@alias" attribute="//@entities.1/@features.2"/>
     <projections refAlias="//@queries.6/@inclusions.2/@alias" attribute="//@entities.5/@features.1"/>
     <projections refAlias="//@queries.6/@inclusions.1/@alias" attribute="//@entities.4/@features.0"/>
     <projections refAlias="//@queries.6/@inclusions.1/@alias" attribute="//@entities.4/@features.1"/>

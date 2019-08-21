@@ -20,7 +20,7 @@ class GenerateCassandra {
     properties.put(EmfModel.PROPERTY_FILE_BASED_METAMODEL_URI,
         URI.createURI(("model/columnFamilyDataModel.ecore").toString()))
     properties.put(EmfModel.PROPERTY_MODEL_URI,
-        URI.createURI("resources/onlineShopCF.model").toString())
+        URI.createURI("resources/eCommerceCF.model").toString())
     properties.put(EmfModel.PROPERTY_READONLOAD, true)
     properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, false)
     documentDataModel.load(properties, null as IRelativePathResolver)
@@ -40,7 +40,7 @@ class GenerateCassandra {
     val result = templateModule.execute
     templateModule.getContext().getModelRepository().dispose()
     // Print the results to a file
-    val out = new PrintWriter("codeGen/onlineShopCassandra.cql")
+    val out = new PrintWriter("codeGen/eCommerce.cql")
     out.println(result)
     out.close
     println("Generation finished")

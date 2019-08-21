@@ -99,7 +99,7 @@ query Q4_clientPurchasesNearChristmas:
             client.purchases.shipAddress as address
   where client.clientId = "?1" and purchases.year = "?2"
     and purchases.month >= "10"
-  order by purchases.month, product.price
+  order by purchases.month, lines.unitPrice
 
 query Q5_purchasesWithBillsByYear:
   select pur.purchaseId, pur.year,
@@ -120,7 +120,7 @@ query Q6_purchasesByYearWithPostalCode:
 
 query Q7_clientPurchasesInYearRange:
   select client.clientId, client.name,
-         purchases.purchaseId, purchases.year,
+         purchases.purchaseId, purchases.year, purchases.month,
          product.name,
          lines.quantity, lines.unitPrice
   from Client as client

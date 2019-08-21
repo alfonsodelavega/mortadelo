@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="ASCII"?>
+<gdmLang:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gdmLang="http://www.unican.es/istr/mortadelo/gdm/lang/GdmLang">
+  <entities name="Client">
+    <features xsi:type="gdmLang:Attribute" name="clientId" type="id"/>
+    <features xsi:type="gdmLang:Attribute" name="name" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="nationality" type="text"/>
+    <features xsi:type="gdmLang:Reference" name="purchases" entity="//@entities.1" cardinality="*"/>
+  </entities>
+  <entities name="Purchase">
+    <annotations name="highlyUpdated"/>
+    <features xsi:type="gdmLang:Attribute" name="purchaseId" type="id"/>
+    <features xsi:type="gdmLang:Attribute" name="year"/>
+    <features xsi:type="gdmLang:Attribute" name="month"/>
+    <features xsi:type="gdmLang:Attribute" name="day"/>
+    <features xsi:type="gdmLang:Attribute" name="totalAmount"/>
+    <features xsi:type="gdmLang:Reference" name="shipAddress" entity="//@entities.2" cardinality="1"/>
+    <features xsi:type="gdmLang:Reference" name="bill" entity="//@entities.3" cardinality="1"/>
+    <features xsi:type="gdmLang:Reference" name="lines" entity="//@entities.4" cardinality="*"/>
+  </entities>
+  <entities name="Address">
+    <features xsi:type="gdmLang:Attribute" name="street" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="postalCode" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="city" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="country" type="text"/>
+  </entities>
+  <entities name="Bill">
+    <features xsi:type="gdmLang:Attribute" name="billId" type="id"/>
+    <features xsi:type="gdmLang:Attribute" name="billDate" type="date"/>
+    <features xsi:type="gdmLang:Attribute" name="billingData" type="text"/>
+  </entities>
+  <entities name="PurchaseLine">
+    <features xsi:type="gdmLang:Attribute" name="quantity"/>
+    <features xsi:type="gdmLang:Attribute" name="unitPrice"/>
+    <features xsi:type="gdmLang:Reference" name="product" entity="//@entities.5" cardinality="1"/>
+  </entities>
+  <entities name="Product">
+    <features xsi:type="gdmLang:Attribute" name="productId" type="id"/>
+    <features xsi:type="gdmLang:Attribute" name="name" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="description" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="price"/>
+    <features xsi:type="gdmLang:Reference" name="categories" entity="//@entities.6" cardinality="*"/>
+    <features xsi:type="gdmLang:Reference" name="provider" entity="//@entities.7" cardinality="1"/>
+  </entities>
+  <entities name="Category">
+    <features xsi:type="gdmLang:Attribute" name="categoryId" type="id"/>
+    <features xsi:type="gdmLang:Attribute" name="name" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="description" type="text"/>
+  </entities>
+  <entities name="Provider">
+    <features xsi:type="gdmLang:Attribute" name="providerId" type="id"/>
+    <features xsi:type="gdmLang:Attribute" name="name" type="text"/>
+  </entities>
+  <queries name="Q1_productsById">
+    <projections refAlias="//@queries.0/@from/@alias" attribute="//@entities.5/@features.0"/>
+    <projections refAlias="//@queries.0/@from/@alias" attribute="//@entities.5/@features.1"/>
+    <projections refAlias="//@queries.0/@from/@alias" attribute="//@entities.5/@features.2"/>
+    <projections refAlias="//@queries.0/@from/@alias" attribute="//@entities.5/@features.3"/>
+    <from entity="//@entities.5">
+      <alias name="prod"/>
+    </from>
+    <condition xsi:type="gdmLang:Equality" value="?">
+      <selection refAlias="//@queries.0/@from/@alias" attribute="//@entities.5/@features.0"/>
+    </condition>
+  </queries>
+  <queries name="Q2_productsAndCategoryByName">
+    <projections refAlias="//@queries.1/@from/@alias" attribute="//@entities.5/@features.1"/>
+    <projections refAlias="//@queries.1/@from/@alias" attribute="//@entities.5/@features.2"/>
+    <projections refAlias="//@queries.1/@from/@alias" attribute="//@entities.5/@features.3"/>
+    <projections refAlias="//@queries.1/@inclusions.0/@alias" attribute="//@entities.6/@features.1"/>
+    <from entity="//@entities.5">
+      <alias name="prod"/>
+    </from>
+    <inclusions refAlias="//@queries.1/@from/@alias" refs="//@entities.5/@features.4">
+      <alias name="cat"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:Equality" value="?">
+      <selection refAlias="//@queries.1/@from/@alias" attribute="//@entities.5/@features.1"/>
+    </condition>
+  </queries>
+  <queries name="Q3_productsByCategory">
+    <projections refAlias="//@queries.2/@from/@alias" attribute="//@entities.5/@features.1"/>
+    <projections refAlias="//@queries.2/@from/@alias" attribute="//@entities.5/@features.2"/>
+    <projections refAlias="//@queries.2/@from/@alias" attribute="//@entities.5/@features.3"/>
+    <projections refAlias="//@queries.2/@inclusions.0/@alias" attribute="//@entities.6/@features.1"/>
+    <from entity="//@entities.5">
+      <alias name="prod"/>
+    </from>
+    <inclusions refAlias="//@queries.2/@from/@alias" refs="//@entities.5/@features.4">
+      <alias name="cat"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:Equality" value="?">
+      <selection refAlias="//@queries.2/@inclusions.0/@alias" attribute="//@entities.6/@features.1"/>
+    </condition>
+    <orderingAttributes refAlias="//@queries.2/@from/@alias" attribute="//@entities.5/@features.3"/>
+  </queries>
+  <queries name="Q4_clientPurchasesNearChristmas">
+    <projections refAlias="//@queries.3/@from/@alias" attribute="//@entities.0/@features.0"/>
+    <projections refAlias="//@queries.3/@from/@alias" attribute="//@entities.0/@features.1"/>
+    <projections refAlias="//@queries.3/@from/@alias" attribute="//@entities.0/@features.2"/>
+    <projections refAlias="//@queries.3/@inclusions.0/@alias" attribute="//@entities.1/@features.0"/>
+    <projections refAlias="//@queries.3/@inclusions.0/@alias" attribute="//@entities.1/@features.1"/>
+    <projections refAlias="//@queries.3/@inclusions.0/@alias" attribute="//@entities.1/@features.2"/>
+    <projections refAlias="//@queries.3/@inclusions.0/@alias" attribute="//@entities.1/@features.3"/>
+    <projections refAlias="//@queries.3/@inclusions.1/@alias" attribute="//@entities.4/@features.0"/>
+    <projections refAlias="//@queries.3/@inclusions.1/@alias" attribute="//@entities.4/@features.1"/>
+    <projections refAlias="//@queries.3/@inclusions.2/@alias" attribute="//@entities.5/@features.1"/>
+    <projections refAlias="//@queries.3/@inclusions.3/@alias" attribute="//@entities.2/@features.1"/>
+    <from entity="//@entities.0">
+      <alias name="client"/>
+    </from>
+    <inclusions refAlias="//@queries.3/@from/@alias" refs="//@entities.0/@features.3">
+      <alias name="purchases"/>
+    </inclusions>
+    <inclusions refAlias="//@queries.3/@from/@alias" refs="//@entities.0/@features.3 //@entities.1/@features.7">
+      <alias name="lines"/>
+    </inclusions>
+    <inclusions refAlias="//@queries.3/@from/@alias" refs="//@entities.0/@features.3 //@entities.1/@features.7 //@entities.4/@features.2">
+      <alias name="product"/>
+    </inclusions>
+    <inclusions refAlias="//@queries.3/@from/@alias" refs="//@entities.0/@features.3 //@entities.1/@features.5">
+      <alias name="address"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:AndConjunction">
+      <left xsi:type="gdmLang:AndConjunction">
+        <left xsi:type="gdmLang:Equality" value="?1">
+          <selection refAlias="//@queries.3/@from/@alias" attribute="//@entities.0/@features.0"/>
+        </left>
+        <right xsi:type="gdmLang:Equality" value="?2">
+          <selection refAlias="//@queries.3/@inclusions.0/@alias" attribute="//@entities.1/@features.1"/>
+        </right>
+      </left>
+      <right xsi:type="gdmLang:MoreThanOrEqual" value="10">
+        <selection refAlias="//@queries.3/@inclusions.0/@alias" attribute="//@entities.1/@features.2"/>
+      </right>
+    </condition>
+    <orderingAttributes refAlias="//@queries.3/@inclusions.0/@alias" attribute="//@entities.1/@features.2"/>
+    <orderingAttributes refAlias="//@queries.3/@inclusions.1/@alias" attribute="//@entities.4/@features.1"/>
+  </queries>
+  <queries name="Q5_purchasesWithBillsByYear">
+    <projections refAlias="//@queries.4/@from/@alias" attribute="//@entities.1/@features.0"/>
+    <projections refAlias="//@queries.4/@from/@alias" attribute="//@entities.1/@features.1"/>
+    <projections refAlias="//@queries.4/@from/@alias" attribute="//@entities.1/@features.2"/>
+    <projections refAlias="//@queries.4/@from/@alias" attribute="//@entities.1/@features.4"/>
+    <projections refAlias="//@queries.4/@inclusions.0/@alias" attribute="//@entities.3/@features.0"/>
+    <projections refAlias="//@queries.4/@inclusions.0/@alias" attribute="//@entities.3/@features.2"/>
+    <from entity="//@entities.1">
+      <alias name="pur"/>
+    </from>
+    <inclusions refAlias="//@queries.4/@from/@alias" refs="//@entities.1/@features.6">
+      <alias name="bill"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:Equality" value="?">
+      <selection refAlias="//@queries.4/@from/@alias" attribute="//@entities.1/@features.1"/>
+    </condition>
+    <orderingAttributes refAlias="//@queries.4/@from/@alias" attribute="//@entities.1/@features.2"/>
+  </queries>
+  <queries name="Q6_purchasesByYearWithPostalCode">
+    <projections refAlias="//@queries.5/@from/@alias" attribute="//@entities.1/@features.0"/>
+    <projections refAlias="//@queries.5/@from/@alias" attribute="//@entities.1/@features.1"/>
+    <projections refAlias="//@queries.5/@from/@alias" attribute="//@entities.1/@features.2"/>
+    <projections refAlias="//@queries.5/@from/@alias" attribute="//@entities.1/@features.4"/>
+    <projections refAlias="//@queries.5/@inclusions.0/@alias" attribute="//@entities.2/@features.1"/>
+    <from entity="//@entities.1">
+      <alias name="pur"/>
+    </from>
+    <inclusions refAlias="//@queries.5/@from/@alias" refs="//@entities.1/@features.5">
+      <alias name="addr"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:Equality" value="?">
+      <selection refAlias="//@queries.5/@from/@alias" attribute="//@entities.1/@features.1"/>
+    </condition>
+    <orderingAttributes refAlias="//@queries.5/@from/@alias" attribute="//@entities.1/@features.2"/>
+    <orderingAttributes refAlias="//@queries.5/@inclusions.0/@alias" attribute="//@entities.2/@features.1"/>
+  </queries>
+  <queries name="Q7_clientPurchasesInYearRange">
+    <projections refAlias="//@queries.6/@from/@alias" attribute="//@entities.0/@features.0"/>
+    <projections refAlias="//@queries.6/@from/@alias" attribute="//@entities.0/@features.1"/>
+    <projections refAlias="//@queries.6/@inclusions.0/@alias" attribute="//@entities.1/@features.0"/>
+    <projections refAlias="//@queries.6/@inclusions.0/@alias" attribute="//@entities.1/@features.1"/>
+    <projections refAlias="//@queries.6/@inclusions.0/@alias" attribute="//@entities.1/@features.2"/>
+    <projections refAlias="//@queries.6/@inclusions.2/@alias" attribute="//@entities.5/@features.1"/>
+    <projections refAlias="//@queries.6/@inclusions.1/@alias" attribute="//@entities.4/@features.0"/>
+    <projections refAlias="//@queries.6/@inclusions.1/@alias" attribute="//@entities.4/@features.1"/>
+    <from entity="//@entities.0">
+      <alias name="client"/>
+    </from>
+    <inclusions refAlias="//@queries.6/@from/@alias" refs="//@entities.0/@features.3">
+      <alias name="purchases"/>
+    </inclusions>
+    <inclusions refAlias="//@queries.6/@inclusions.0/@alias" refs="//@entities.1/@features.7">
+      <alias name="lines"/>
+    </inclusions>
+    <inclusions refAlias="//@queries.6/@inclusions.1/@alias" refs="//@entities.4/@features.2">
+      <alias name="product"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:AndConjunction">
+      <left xsi:type="gdmLang:AndConjunction">
+        <left xsi:type="gdmLang:Equality" value="?1">
+          <selection refAlias="//@queries.6/@from/@alias" attribute="//@entities.0/@features.0"/>
+        </left>
+        <right xsi:type="gdmLang:Equality" value="?2">
+          <selection refAlias="//@queries.6/@inclusions.0/@alias" attribute="//@entities.1/@features.1"/>
+        </right>
+      </left>
+      <right xsi:type="gdmLang:Equality" value="?3">
+        <selection refAlias="//@queries.6/@inclusions.0/@alias" attribute="//@entities.1/@features.2"/>
+      </right>
+    </condition>
+  </queries>
+</gdmLang:Model>
