@@ -187,10 +187,10 @@
     <inclusions refAlias="//@queries.6/@from/@alias" refs="//@entities.0/@features.3">
       <alias name="purchases"/>
     </inclusions>
-    <inclusions refAlias="//@queries.6/@inclusions.0/@alias" refs="//@entities.1/@features.7">
+    <inclusions refAlias="//@queries.6/@from/@alias" refs="//@entities.0/@features.3 //@entities.1/@features.7">
       <alias name="lines"/>
     </inclusions>
-    <inclusions refAlias="//@queries.6/@inclusions.1/@alias" refs="//@entities.4/@features.2">
+    <inclusions refAlias="//@queries.6/@from/@alias" refs="//@entities.0/@features.3 //@entities.1/@features.7 //@entities.4/@features.2">
       <alias name="product"/>
     </inclusions>
     <condition xsi:type="gdmLang:AndConjunction">
