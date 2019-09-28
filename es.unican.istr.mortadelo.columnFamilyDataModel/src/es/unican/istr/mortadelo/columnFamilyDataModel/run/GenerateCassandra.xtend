@@ -13,17 +13,21 @@ import org.eclipse.epsilon.eol.models.IRelativePathResolver
 class GenerateCassandra {
   // Perform the code generation step
   def static void main(String[] args) {
-    // Load the document data model
-    val documentDataModel = new EmfModel()
+    val example = "eCommerce"
+    val resourcesFolder = "../es.unican.istr.mortadelo.gdm.examples/columnFamily"
+    // Load the column family data model
+    val cfDataModel = new EmfModel()
     val properties = new StringProperties()
     properties.put(EmfModel.PROPERTY_NAME, "columnFamilyDataModel")
     properties.put(EmfModel.PROPERTY_FILE_BASED_METAMODEL_URI,
         URI.createURI(("model/columnFamilyDataModel.ecore").toString()))
+    val inputFile = new File(
+      String.format("%s/%sCF.model", resourcesFolder, example))
     properties.put(EmfModel.PROPERTY_MODEL_URI,
-        URI.createURI("resources/eCommerceCF.model").toString())
+        URI.createURI(inputFile.canonicalPath))
     properties.put(EmfModel.PROPERTY_READONLOAD, true)
     properties.put(EmfModel.PROPERTY_STOREONDISPOSAL, false)
-    documentDataModel.load(properties, null as IRelativePathResolver)
+    cfDataModel.load(properties, null as IRelativePathResolver)
     // Prepare and execute the template
     val templateModule =
         new EglTemplateFactoryModuleAdapter(new EglTemplateFactory())
@@ -36,11 +40,13 @@ class GenerateCassandra {
       }
       return;
     }
-    templateModule.getContext().getModelRepository().addModel(documentDataModel)
+    templateModule.getContext().getModelRepository().addModel(cfDataModel)
     val result = templateModule.execute
     templateModule.getContext().getModelRepository().dispose()
     // Print the results to a file
-    val out = new PrintWriter("codeGen/eCommerce.cql")
+    val outputFile = new File(String.format("%s/%s.cql", resourcesFolder, example))
+    new File(outputFile.parent).mkdirs // create any missing folder in the path
+    val out = new PrintWriter(outputFile.canonicalPath)
     out.println(result)
     out.close
     println("Generation finished")

@@ -19,6 +19,7 @@ import es.unican.istr.mortadelo.gdm.lang.gdmLang.Model
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.MoreThan
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.MoreThanOrEqual
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.OrConjunction
+import java.io.File
 import java.io.IOException
 import java.util.ArrayList
 import java.util.Collections
@@ -35,6 +36,7 @@ class Gdm2Columnar {
 
   // Test the transformation below
   def static void main(String[] args) {
+    val example = "eCommerce"
     // Prepare the xmi resource persistence
     val Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE
     val m = reg.extensionToFactoryMap
@@ -43,17 +45,22 @@ class Gdm2Columnar {
     GdmLangPackage.eINSTANCE.eClass
     ColumnFamilyDataModelPackage.eINSTANCE.eClass
     // Load the GDM model
+    val input = new File(
+      String.format("../es.unican.istr.mortadelo.gdm.examples/%s.model",
+                    example))
     val resSet = new ResourceSetImpl()
-    val inputResource = resSet.getResource(
-      URI.createURI("resources/gdm/eCommerce.model"),
+    val inputResource = resSet.getResource(URI.createURI(input.canonicalPath),
       true
     )
     val gdm = inputResource.contents.get(0) as Model
     // Transform it
     val columnFamilyDM = transformGdm2Columnar(gdm)
     // Save the columnar data model
+    val output = new File(
+      String.format("../es.unican.istr.mortadelo.gdm.examples/columnFamily/%sCF.model",
+                    example))
     val outputResource = resSet.createResource(
-      URI.createURI("resources/columnFamily/eCommerceCF.model")
+      URI.createURI(output.canonicalPath)
     )
     outputResource.getContents().add(columnFamilyDM)
     try {
