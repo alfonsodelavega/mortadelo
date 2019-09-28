@@ -11,25 +11,19 @@ operation Column getType() : String {
   }
 }
 
-operation ColumnFamily getPartitionKeys() : String {
-  var partitionKeys = self.keys.select(k | k.isTypeOf(PartitionKey))
-                               .sortBy(k | k.position)
-                               .collect(k | k.column.name);
-  var res = partitionKeys.concat(", ");
-  // parenthesis surrounding partition keys only if clustering keys present
-  if (not self.keys.select(k | k.isTypeOf(ClusteringKey)).isEmpty()) {
+operation ColumnFamily formatPartitionKeys() : String {
+  var res = self.partitionKeys.collect(k | k.column.name).concat(", ");
+  // extra parenthesis around partition keys only if clustering keys present
+  if (not self.clusteringKeys.isEmpty()) {
     res = "(" + res + ")";
   }
   return res;
 }
 
-operation ColumnFamily getClusteringKeys() : String {
-  var clusteringKeys = self.keys.select(k | k.isTypeOf(ClusteringKey))
-                                .sortBy(k | k.position)
-                                .collect(k | k.column.name);
-  if (clusteringKeys.isEmpty()) {
+operation ColumnFamily formatClusteringKeys() : String {
+  if (self.clusteringKeys.isEmpty()) {
     return "";
   } else {
-    return ", " + clusteringKeys.concat(", ");
+    return ", " + self.clusteringKeys.collect(k | k.column.name).concat(", ");
   }
 }

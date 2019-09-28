@@ -8,7 +8,7 @@ class DocumentDataModel {
 
 class Collection {
   attr String[1] name;
-  val Document[1] document;
+  val Document[1] root;
   val Index[*] indexes;
 }
 

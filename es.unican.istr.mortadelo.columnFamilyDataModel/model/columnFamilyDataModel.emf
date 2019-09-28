@@ -3,11 +3,16 @@
 package columnFamilyDataModel;
 
 class ColumnFamilyDataModel {
-  val ColumnFamily[*] columnFamilies;
+  val Table[*] tables;
 }
 
 class ColumnFamily {
   attr String[1] name;
+}
+
+class Table {
+  attr String[1] name;
+  val ColumnFamily[+] columnFamilies;
   val Column[*] columns;
   val PartitionKey[+] partitionKeys;
   val ClusteringKey[*] clusteringKeys;
@@ -15,7 +20,8 @@ class ColumnFamily {
 
 class Column {
   attr String[1] name;
-  val Type[1] type;
+  val Type type;
+  ref ColumnFamily columnFamily;
 }
 
 abstract class Type {

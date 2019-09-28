@@ -23,7 +23,7 @@ import java.io.IOException
 import java.util.ArrayList
 import java.util.Collections
 import java.util.HashMap
-import java.util.HashSet
+import java.util.LinkedHashSet
 import java.util.List
 import java.util.Map
 import org.eclipse.emf.common.util.URI
@@ -45,21 +45,21 @@ class Gdm2Columnar {
     // Load the GDM model
     val resSet = new ResourceSetImpl()
     val inputResource = resSet.getResource(
-      URI.createURI("resources/gdm/onlineShop.model"),
+      URI.createURI("resources/gdm/eCommerce.model"),
       true
-    );
+    )
     val gdm = inputResource.contents.get(0) as Model
     // Transform it
     val columnFamilyDM = transformGdm2Columnar(gdm)
     // Save the columnar data model
     val outputResource = resSet.createResource(
-      URI.createURI("resources/columnFamily/onlineShopCF.model")
+      URI.createURI("resources/columnFamily/eCommerceCF.model")
     )
-    outputResource.getContents().add(columnFamilyDM);
+    outputResource.getContents().add(columnFamilyDM)
     try {
-      outputResource.save(Collections.EMPTY_MAP);
+      outputResource.save(Collections.EMPTY_MAP)
     } catch (IOException e) {
-      e.printStackTrace();
+      e.printStackTrace()
     }
     println("Transformation finished")
   }
@@ -80,30 +80,25 @@ class Gdm2Columnar {
         attr2column.put(projection.attribute, column)
       }
       val equalities = getEqualities(query.condition)
-      var int position = 0
       for (equality : equalities) {
         val partitionKey = cfFactory.createPartitionKey
-        partitionKey.position = position
-        position += 1
         partitionKey.column = attr2column.get(equality.selection.attribute)
-        columnFamily.keys.add(partitionKey)
+        columnFamily.partitionKeys.add(partitionKey)
       }
-      val orderingAttributesSet = new HashSet<Attribute>
+      val orderingAttributesSet = new LinkedHashSet<Attribute>
       orderingAttributesSet.addAll(
         getInequalities(query.condition).map[ineq | ineq.selection.attribute])
       orderingAttributesSet.addAll(
         query.orderingAttributes.map[ordattr | ordattr.attribute])
       for (orderingAttribute : orderingAttributesSet) {
         val clusteringKey = cfFactory.createClusteringKey
-        clusteringKey.position = position
-        position += 1
         clusteringKey.column = attr2column.get(orderingAttribute)
-        columnFamily.keys.add(clusteringKey)
+        columnFamily.clusteringKeys.add(clusteringKey)
       }
     }
     return cfModel
   }
-  
+
   def static List<Comparison> getInequalities(BooleanExpression expression) {
     val inequalities = new ArrayList<Comparison>
     if (expression instanceof AndConjunction) {
@@ -120,7 +115,7 @@ class Gdm2Columnar {
     }
     return inequalities
   }
-  
+
   def static List<Equality> getEqualities(BooleanExpression expression) {
     val equalities = new ArrayList<Equality>
     if (expression instanceof AndConjunction) {
@@ -135,7 +130,7 @@ class Gdm2Columnar {
     return equalities
   }
 
-  def private static getType(ColumnFamilyDataModelFactory cfFactory, 
+  def private static getType(ColumnFamilyDataModelFactory cfFactory,
       AttributeSelection selection) {
     switch (selection.attribute.type) {
       case ID: {

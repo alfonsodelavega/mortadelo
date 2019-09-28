@@ -3,11 +3,16 @@
     xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="columnFamilyDataModel" nsURI="http://columnFamilyDataModel.mortadelo.istr.unican.es"
     nsPrefix="columnFamilyDataModel">
   <eClassifiers xsi:type="ecore:EClass" name="ColumnFamilyDataModel">
-    <eStructuralFeatures xsi:type="ecore:EReference" name="columnFamilies" upperBound="-1"
-        eType="#//ColumnFamily" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="tables" upperBound="-1"
+        eType="#//Table" containment="true"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="ColumnFamily">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Table">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="columnFamilies" lowerBound="1"
+        upperBound="-1" eType="#//ColumnFamily" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="columns" upperBound="-1"
         eType="#//Column" containment="true"/>
     <eStructuralFeatures xsi:type="ecore:EReference" name="partitionKeys" lowerBound="1"
@@ -17,8 +22,8 @@
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Column">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
-    <eStructuralFeatures xsi:type="ecore:EReference" name="type" lowerBound="1" eType="#//Type"
-        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="type" eType="#//Type" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EReference" name="columnFamily" eType="#//ColumnFamily"/>
   </eClassifiers>
   <eClassifiers xsi:type="ecore:EClass" name="Type" abstract="true"/>
   <eClassifiers xsi:type="ecore:EClass" name="SimpleType" eSuperTypes="#//Type">
