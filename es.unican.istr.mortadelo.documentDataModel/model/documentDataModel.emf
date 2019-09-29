@@ -30,7 +30,7 @@ class PrimitiveField extends Field {
 }
 
 class ArrayField extends Field {
-  val Field[*] types;
+  val Field[1] type;
 }
 
 enum PrimitiveType {

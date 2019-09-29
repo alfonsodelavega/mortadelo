@@ -3,6 +3,10 @@ package es.unican.istr.mortadelo.gdm.transformations.gdm2document;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Generic tree type where each nodes's children are a unique set
+ * @author Alfonso de la Vega
+ */
 public class Tree<T> {
   private T data;
   private List<Tree<T>> children;
@@ -12,9 +16,16 @@ public class Tree<T> {
     children = new ArrayList<Tree<T>>();
   }
 
+  /**
+   * If the data already exists, the existing tree node is returned, if not a
+   *   new one is generated
+   * @param data The element to include
+   * @return A tree node where the data has been added (or where it was present)
+   */
   public Tree<T> add(T data) {
     for (Tree<T> child : children) {
-      if (child.data.equals(data)) {
+      if (child.data == null && data == null
+          || child.data.equals(data)) {
         return child; // not added to the tree
       }
     }
@@ -27,12 +38,16 @@ public class Tree<T> {
     return children;
   }
 
+  public T getData() {
+    return data;
+  }
+
   @SuppressWarnings("unchecked")
   public boolean equals(Object obj) {
-    if (obj instanceof Tree<?>) {
-      return data.equals(((Tree<T>)obj).data);
+    if (data == null || obj == null || !(obj instanceof Tree<?>)) {
+      return false;
     }
-    return false;
+    return data.equals(((Tree<T>) obj).data);
   }
 
   public String toString() {

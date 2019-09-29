@@ -1,16 +1,26 @@
 package es.unican.istr.mortadelo.gdm.transformations.gdm2document
 
 import columnFamilyDataModel.ColumnFamilyDataModelPackage
+import documentDataModel.Document
 import documentDataModel.DocumentDataModel
 import documentDataModel.DocumentDataModelFactory
+import documentDataModel.Field
+import documentDataModel.PrimitiveField
+import documentDataModel.PrimitiveType
+import es.unican.istr.mortadelo.gdm.lang.gdmLang.Attribute
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.Entity
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.GdmLangPackage
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.Model
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.Query
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.Reference
+import es.unican.istr.mortadelo.gdm.lang.gdmLang.Type
 import java.io.File
 import java.io.IOException
+import java.util.ArrayList
+import java.util.Collection
 import java.util.Collections
+import java.util.List
+import java.util.Set
 import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
@@ -60,16 +70,25 @@ class Gdm2Document {
     val entityToQueries =  mainEntities.map[me |
       me -> gdm.queries.filter[q | q.from.entity.equals(me)]]
     // generate access trees
-    val accessTrees = entityToQueries.map[e2q | createAccessTree(e2q.key, e2q.value)]
-    for (tree : accessTrees) {
-      println(tree)
-      println()
-    }
+    val entity2accessTree = newImmutableMap(
+      entityToQueries.map[e2q |
+                          e2q.key -> createAccessTree(e2q.key, e2q.value)])
     // complete each access tree with the information of the rest
+    for (entity : mainEntities) {
+      val tree = entity2accessTree.get(entity)
+      val otherTrees = new ArrayList<Tree<Reference>> (entity2accessTree.values)
+      otherTrees.remove(tree)
+      completeAccessTree(entity, tree, otherTrees)
+    }
     // collections generation
     for (entity : mainEntities) {
+      val tree = entity2accessTree.get(entity)
       val newCol = docFactory.createCollection()
       newCol.name = entity.name
+      val docType = docFactory.createDocument()
+      docType.name = "root"
+      newCol.root = docType
+      populateDocument(docType, docFactory, entity, tree, mainEntities)
       docModel.collections.add(newCol)
     }
     return docModel
@@ -81,21 +100,106 @@ class Gdm2Document {
    *
    *  @returns A tree of pairs (traversed reference, destination entity)
    */
-  def private static Tree<Pair<Reference, Entity>> createAccessTree(Entity mainEntity,
+  def private static Tree<Reference> createAccessTree(Entity mainEntity,
       Iterable<Query> queries) {
     // root element of the tree has no reference
-    val tree = new Tree<Pair<Reference, Entity>> (null -> mainEntity);
+    val tree = new Tree<Reference> (null)
     for (query : queries) {
       for (inclusion : query.inclusions) {
         // populate the tree with all the concatenated references
         // the add method of the tree handles collisions for us
         var auxTree = tree
         for (ref : inclusion.refs) {
-          val child = auxTree.add(ref -> ref.entity)
+          val child = auxTree.add(ref)
           auxTree = child // we keep adding children down the rabbit hole
         }
       }
     }
     return tree
+  }
+
+  def private static void completeAccessTree(Entity entity, Tree<Reference> tree,
+      Collection<Tree<Reference>> otherTrees) {
+    for (oTree : otherTrees) {
+      val treeNodes = searchEntity(entity, oTree)
+      for (treeNode : treeNodes) {
+        addTreeNode(tree, treeNode)
+      }
+    }
+  }
+
+  def private static List<Tree<Reference>> searchEntity(Entity entity,
+      Tree<Reference> tree) {
+    val treeNodes = new ArrayList<Tree<Reference>>()
+    for (child : tree.children) {
+      if (child.data.entity.equals(entity)) {
+        treeNodes.add(child)
+      }
+      treeNodes.addAll(searchEntity(entity, child))
+    }
+    return treeNodes
+  }
+
+  def private static void addTreeNode(Tree<Reference> tree, Tree<Reference> treeNode) {
+    for (child : treeNode.children) {
+      val addedChild = tree.add(child.data)
+      addTreeNode(addedChild, child)
+    }
+  }
+
+  def private static void populateDocument(Document document,
+      DocumentDataModelFactory docFactory, Entity entity, Tree<Reference> tree,
+      Set<Entity> mainEntities) {
+    addAttributes(document, entity, docFactory)
+    for (child : tree.children) {
+      val reference = child.data
+      // main entity pruning: if reference points to a main entity, instead of
+      //   generating the document we create a reference
+      var Field newField = null
+      if (mainEntities.contains(reference.entity)) {
+        newField = docFactory.createPrimitiveField()
+        newField.name = reference.entity.name.toFirstLower + "Ref"
+        (newField as PrimitiveField).type = PrimitiveType.ID
+      } else {
+        newField = docFactory.createDocument()
+        newField.name = reference.entity.name.toFirstLower
+        populateDocument(newField as Document, docFactory, reference.entity,
+          child, mainEntities)
+      }
+      if (!reference.cardinality.equals("1")) {
+        // encapsulate field in an array
+        val arrayField = docFactory.createArrayField()
+        arrayField.name = newField.name + "Array"
+        arrayField.type = newField
+        document.fields.add(arrayField)
+      } else {
+        document.fields.add(newField)
+      }
+    }
+  }
+
+  def private static void addAttributes(Document document, Entity entity,
+      DocumentDataModelFactory docFactory) {
+    for (attr : entity.features.filter[f | f instanceof Attribute]) {
+      val field = docFactory.createPrimitiveField()
+      field.name = attr.name
+      field.type = convertType((attr as Attribute).type)
+      document.fields.add(field)
+    }
+  }
+
+  def private static PrimitiveType convertType(Type type) {
+    switch(type) {
+      case ID:
+        return PrimitiveType.ID
+      case NUMBER:
+        return PrimitiveType.FLOAT
+      case DATE:
+        return PrimitiveType.DATE
+      case BOOLEAN:
+        return PrimitiveType.BOOLEAN
+      default:
+        return PrimitiveType.TEXT
+    }
   }
 }
