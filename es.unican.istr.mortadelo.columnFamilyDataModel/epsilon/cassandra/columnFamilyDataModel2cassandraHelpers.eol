@@ -11,7 +11,7 @@ operation Column getType() : String {
   }
 }
 
-operation ColumnFamily formatPartitionKeys() : String {
+operation Table formatPartitionKeys() : String {
   var res = self.partitionKeys.collect(k | k.column.name).concat(", ");
   // extra parenthesis around partition keys only if clustering keys present
   if (not self.clusteringKeys.isEmpty()) {
@@ -20,7 +20,7 @@ operation ColumnFamily formatPartitionKeys() : String {
   return res;
 }
 
-operation ColumnFamily formatClusteringKeys() : String {
+operation Table formatClusteringKeys() : String {
   if (self.clusteringKeys.isEmpty()) {
     return "";
   } else {

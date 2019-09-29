@@ -27,6 +27,7 @@ import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
 
 class Gdm2Document {
+
   // Test the transformation below
   def static void main(String[] args) {
     val example = "eCommerce"

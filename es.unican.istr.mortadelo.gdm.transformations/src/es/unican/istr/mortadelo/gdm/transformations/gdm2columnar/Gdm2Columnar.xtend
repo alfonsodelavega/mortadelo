@@ -75,22 +75,22 @@ class Gdm2Columnar {
     val cfFactory = ColumnFamilyDataModelFactory.eINSTANCE
     val ColumnFamilyDataModel cfModel = cfFactory.createColumnFamilyDataModel()
     for (query : gdm.queries) {
-      val columnFamily = cfFactory.createColumnFamily
-      columnFamily.name = query.name
-      cfModel.columnFamilies.add(columnFamily)
+      val table = cfFactory.createTable()
+      table.name = query.name
+      cfModel.tables.add(table)
       val Map<Attribute, Column> attr2column = new HashMap<Attribute, Column>
       for (projection : query.projections) {
         val column = cfFactory.createColumn
         column.name = getName(projection)
         column.type = getType(cfFactory, projection)
-        columnFamily.columns.add(column)
+        table.columns.add(column)
         attr2column.put(projection.attribute, column)
       }
       val equalities = getEqualities(query.condition)
       for (equality : equalities) {
         val partitionKey = cfFactory.createPartitionKey
         partitionKey.column = attr2column.get(equality.selection.attribute)
-        columnFamily.partitionKeys.add(partitionKey)
+        table.partitionKeys.add(partitionKey)
       }
       val orderingAttributesSet = new LinkedHashSet<Attribute>
       orderingAttributesSet.addAll(
@@ -100,13 +100,13 @@ class Gdm2Columnar {
       for (orderingAttribute : orderingAttributesSet) {
         val clusteringKey = cfFactory.createClusteringKey
         clusteringKey.column = attr2column.get(orderingAttribute)
-        columnFamily.clusteringKeys.add(clusteringKey)
+        table.clusteringKeys.add(clusteringKey)
       }
     }
     return cfModel
   }
 
-  def static List<Comparison> getInequalities(BooleanExpression expression) {
+  def private static List<Comparison> getInequalities(BooleanExpression expression) {
     val inequalities = new ArrayList<Comparison>
     if (expression instanceof AndConjunction) {
       inequalities.addAll(getInequalities((expression as AndConjunction).left))
@@ -123,7 +123,7 @@ class Gdm2Columnar {
     return inequalities
   }
 
-  def static List<Equality> getEqualities(BooleanExpression expression) {
+  def private static List<Equality> getEqualities(BooleanExpression expression) {
     val equalities = new ArrayList<Equality>
     if (expression instanceof AndConjunction) {
       equalities.addAll(getEqualities((expression as AndConjunction).left))
