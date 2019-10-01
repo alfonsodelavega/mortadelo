@@ -1,4 +1,4 @@
-package es.unican.istr.mortadelo.gdm.transformations.gdm2document;
+package es.unican.istr.mortadelo.gdm.transformations.common;
 
 import java.util.ArrayList;
 import java.util.List;

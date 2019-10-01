@@ -14,6 +14,7 @@ import es.unican.istr.mortadelo.gdm.lang.gdmLang.Model
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.Query
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.Reference
 import es.unican.istr.mortadelo.gdm.lang.gdmLang.Type
+import es.unican.istr.mortadelo.gdm.transformations.common.Tree
 import java.io.File
 import java.io.IOException
 import java.util.ArrayList
@@ -73,7 +74,7 @@ class Gdm2Document {
     // generate access trees
     val entity2accessTree = newImmutableMap(
       entityToQueries.map[e2q |
-                          e2q.key -> createAccessTree(e2q.key, e2q.value)])
+                          e2q.key -> createAccessTree(e2q.value)])
     // complete each access tree with the information of the rest
     for (entity : mainEntities) {
       val tree = entity2accessTree.get(entity)
@@ -101,8 +102,7 @@ class Gdm2Document {
    *
    *  @returns A tree of pairs (traversed reference, destination entity)
    */
-  def private static Tree<Reference> createAccessTree(Entity mainEntity,
-      Iterable<Query> queries) {
+  def private static Tree<Reference> createAccessTree(Iterable<Query> queries) {
     // root element of the tree has no reference
     val tree = new Tree<Reference> (null)
     for (query : queries) {

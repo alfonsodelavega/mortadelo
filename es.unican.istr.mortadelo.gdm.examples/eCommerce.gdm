@@ -7,7 +7,7 @@
 /***********************/
 
 entity Client {
-  id clientId
+  id clientId unique
   text name
   text nationality
   ref Purchase[*] purchases
@@ -15,7 +15,7 @@ entity Client {
 
 @highlyUpdated
 entity Purchase {
-  id purchaseId
+  id purchaseId unique
   number year
   number month
   number day
@@ -33,7 +33,7 @@ entity Address {
 }
 
 entity Bill {
-  id billId
+  id billId unique
   date billDate
   text billingData
 }
@@ -45,7 +45,7 @@ entity PurchaseLine {
 }
 
 entity Product {
-  id productId
+  id productId unique
   text name
   text description
   number price
@@ -54,13 +54,13 @@ entity Product {
 }
 
 entity Category {
-  id categoryId
+  id categoryId unique
   text name
   text description
 }
 
 entity Provider {
-  id providerId
+  id providerId unique
   text name
 }
 /**********************/
@@ -73,16 +73,16 @@ query Q1_productsById:
   from Product as prod
   where prod.productId = "?"
 
-query Q2_productsAndCategoryByName:
+query Q2_productsAndCategoryByProductName:
   select prod.name, prod.description,
-         prod.price, cat.name
+         prod.price, cat.name as catName
   from Product as prod
   including prod.categories as cat
   where prod.name = "?"
 
 query Q3_productsByCategory:
   select prod.name, prod.description,
-         prod.price, cat.name
+         prod.price, cat.name as catName
   from Product as prod
   including prod.categories as cat
   where cat.name = "?"
