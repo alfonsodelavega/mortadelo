@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="ASCII"?>
 <gdmLang:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gdmLang="http://www.unican.es/istr/mortadelo/gdm/lang/GdmLang">
   <entities name="Client">
-    <features xsi:type="gdmLang:Attribute" name="clientId" type="id" isUnique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="clientId" type="id" unique="true"/>
     <features xsi:type="gdmLang:Attribute" name="name" type="text"/>
     <features xsi:type="gdmLang:Attribute" name="nationality" type="text"/>
     <features xsi:type="gdmLang:Reference" name="purchases" entity="//@entities.1" cardinality="*"/>
   </entities>
   <entities name="Purchase">
     <annotations name="highlyUpdated"/>
-    <features xsi:type="gdmLang:Attribute" name="purchaseId" type="id" isUnique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="purchaseId" type="id" unique="true"/>
     <features xsi:type="gdmLang:Attribute" name="year"/>
     <features xsi:type="gdmLang:Attribute" name="month"/>
     <features xsi:type="gdmLang:Attribute" name="day"/>
@@ -24,7 +24,7 @@
     <features xsi:type="gdmLang:Attribute" name="country" type="text"/>
   </entities>
   <entities name="Bill">
-    <features xsi:type="gdmLang:Attribute" name="billId" type="id" isUnique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="billId" type="id" unique="true"/>
     <features xsi:type="gdmLang:Attribute" name="billDate" type="date"/>
     <features xsi:type="gdmLang:Attribute" name="billingData" type="text"/>
   </entities>
@@ -34,7 +34,7 @@
     <features xsi:type="gdmLang:Reference" name="product" entity="//@entities.5" cardinality="1"/>
   </entities>
   <entities name="Product">
-    <features xsi:type="gdmLang:Attribute" name="productId" type="id" isUnique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="productId" type="id" unique="true"/>
     <features xsi:type="gdmLang:Attribute" name="name" type="text"/>
     <features xsi:type="gdmLang:Attribute" name="description" type="text"/>
     <features xsi:type="gdmLang:Attribute" name="price"/>
@@ -42,12 +42,12 @@
     <features xsi:type="gdmLang:Reference" name="provider" entity="//@entities.7" cardinality="1"/>
   </entities>
   <entities name="Category">
-    <features xsi:type="gdmLang:Attribute" name="categoryId" type="id" isUnique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="categoryId" type="id" unique="true"/>
     <features xsi:type="gdmLang:Attribute" name="name" type="text"/>
     <features xsi:type="gdmLang:Attribute" name="description" type="text"/>
   </entities>
   <entities name="Provider">
-    <features xsi:type="gdmLang:Attribute" name="providerId" type="id" isUnique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="providerId" type="id" unique="true"/>
     <features xsi:type="gdmLang:Attribute" name="name" type="text"/>
   </entities>
   <queries name="Q1_productsById">

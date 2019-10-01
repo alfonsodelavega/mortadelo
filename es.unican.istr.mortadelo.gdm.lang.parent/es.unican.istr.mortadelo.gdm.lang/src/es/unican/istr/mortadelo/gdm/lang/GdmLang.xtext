@@ -27,7 +27,7 @@ Feature:
 
 Attribute:
   (annotations+=Annotation (annotations+=Annotation)*)?
-  (type=Type)? name=ID (isUnique?="unique")?;
+  (type=Type)? name=ID (unique?="unique")?;
 
 Reference:
   (annotations+=Annotation (annotations+=Annotation)*)?
