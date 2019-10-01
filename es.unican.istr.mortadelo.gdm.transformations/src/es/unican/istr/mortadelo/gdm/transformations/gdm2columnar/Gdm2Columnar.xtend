@@ -31,6 +31,8 @@ import org.eclipse.emf.common.util.URI
 import org.eclipse.emf.ecore.resource.Resource
 import org.eclipse.emf.ecore.resource.impl.ResourceSetImpl
 import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl
+import org.eclipse.emf.common.util.EList
+import es.unican.istr.mortadelo.gdm.lang.gdmLang.Query
 
 class Gdm2Columnar {
 
@@ -74,36 +76,49 @@ class Gdm2Columnar {
   def static ColumnFamilyDataModel transformGdm2Columnar(Model gdm) {
     val cfFactory = ColumnFamilyDataModelFactory.eINSTANCE
     val ColumnFamilyDataModel cfModel = cfFactory.createColumnFamilyDataModel()
+    val queries = gdm.queries
+    // query merging
+    applyQueryMerging(queries)
+    // tables generation
     for (query : gdm.queries) {
-      val table = cfFactory.createTable()
-      table.name = query.name
+      val table = generateTable(query, cfFactory)
       cfModel.tables.add(table)
-      val Map<Attribute, Column> attr2column = new HashMap<Attribute, Column>
-      for (projection : query.projections) {
-        val column = cfFactory.createColumn
-        column.name = getName(projection)
-        column.type = getType(cfFactory, projection)
-        table.columns.add(column)
-        attr2column.put(projection.attribute, column)
-      }
-      val equalities = getEqualities(query.condition)
-      for (equality : equalities) {
-        val partitionKey = cfFactory.createPartitionKey
-        partitionKey.column = attr2column.get(equality.selection.attribute)
-        table.partitionKeys.add(partitionKey)
-      }
-      val orderingAttributesSet = new LinkedHashSet<Attribute>
-      orderingAttributesSet.addAll(
-        getInequalities(query.condition).map[ineq | ineq.selection.attribute])
-      orderingAttributesSet.addAll(
-        query.orderingAttributes.map[ordattr | ordattr.attribute])
-      for (orderingAttribute : orderingAttributesSet) {
-        val clusteringKey = cfFactory.createClusteringKey
-        clusteringKey.column = attr2column.get(orderingAttribute)
-        table.clusteringKeys.add(clusteringKey)
-      }
     }
     return cfModel
+  }
+
+  def private static applyQueryMerging(EList<Query> list) {
+
+  }
+
+  def static generateTable(Query query, ColumnFamilyDataModelFactory cfFactory) {
+    val table = cfFactory.createTable()
+    table.name = query.name
+    val Map<Attribute, Column> attr2column = new HashMap<Attribute, Column>
+    for (projection : query.projections) {
+      val column = cfFactory.createColumn
+      column.name = getName(projection)
+      column.type = getType(cfFactory, projection)
+      table.columns.add(column)
+      attr2column.put(projection.attribute, column)
+    }
+    val equalities = getEqualities(query.condition)
+    for (equality : equalities) {
+      val partitionKey = cfFactory.createPartitionKey
+      partitionKey.column = attr2column.get(equality.selection.attribute)
+      table.partitionKeys.add(partitionKey)
+    }
+    val orderingAttributesSet = new LinkedHashSet<Attribute>
+    orderingAttributesSet.addAll(
+      getInequalities(query.condition).map[ineq | ineq.selection.attribute])
+    orderingAttributesSet.addAll(
+      query.orderingAttributes.map[ordattr | ordattr.attribute])
+    for (orderingAttribute : orderingAttributesSet) {
+      val clusteringKey = cfFactory.createClusteringKey
+      clusteringKey.column = attr2column.get(orderingAttribute)
+      table.clusteringKeys.add(clusteringKey)
+    }
+    return table
   }
 
   def private static List<Comparison> getInequalities(BooleanExpression expression) {
@@ -139,33 +154,25 @@ class Gdm2Columnar {
 
   def private static getType(ColumnFamilyDataModelFactory cfFactory,
       AttributeSelection selection) {
+    val SimpleType st = cfFactory.createSimpleType
     switch (selection.attribute.type) {
       case ID: {
-        val SimpleType st = cfFactory.createSimpleType
         st.type = PrimitiveType.ID
-        return st
-      }
-      case TEXT: {
-        val SimpleType st = cfFactory.createSimpleType
-        st.type = PrimitiveType.TEXT
-        return st
       }
       case BOOLEAN: {
-        val SimpleType st = cfFactory.createSimpleType
         st.type = PrimitiveType.BOOLEAN
-        return st
       }
       case NUMBER: {
-        val SimpleType st = cfFactory.createSimpleType
         st.type = PrimitiveType.FLOAT
-        return st
       }
       case DATE: {
-        val SimpleType st = cfFactory.createSimpleType
         st.type = PrimitiveType.DATE
-        return st
+      }
+      default: {
+        st.type = PrimitiveType.TEXT
       }
     }
+    return st
   }
 
   def private static getName(AttributeSelection selection) {
