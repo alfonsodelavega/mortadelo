@@ -14,6 +14,9 @@ class GenerateCassandra {
   // Perform the code generation step
   def static void main(String[] args) {
     val example = "eCommerce"
+    println("Cassandra schema generation")
+    println(String.format("Example: %s", example))
+    val totalStart = System.currentTimeMillis()
     val resourcesFolder = "../es.unican.istr.mortadelo.gdm.examples/columnFamily"
     // Load the column family data model
     val cfDataModel = new EmfModel()
@@ -41,7 +44,9 @@ class GenerateCassandra {
       return;
     }
     templateModule.getContext().getModelRepository().addModel(cfDataModel)
+    val start = System.currentTimeMillis()
     val result = templateModule.execute
+    val end = System.currentTimeMillis()
     templateModule.getContext().getModelRepository().dispose()
     // Print the results to a file
     val outputFile = new File(String.format("%s/%s.cql", resourcesFolder, example))
@@ -49,6 +54,10 @@ class GenerateCassandra {
     val out = new PrintWriter(outputFile.canonicalPath)
     out.println(result)
     out.close
+    val totalEnd = System.currentTimeMillis()
     println("Generation finished")
+    println(String.format("Transformation time: %d ms", end - start))
+    println(String.format("Total time (read/write files and models): %d ms",
+        totalEnd - totalStart))
   }
 }

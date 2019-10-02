@@ -40,6 +40,9 @@ class Gdm2Columnar {
   // Test the transformation below
   def static void main(String[] args) {
     val example = "eCommerce"
+    println("GDM to column family logical model")
+    println(String.format("Example: %s", example))
+    val totalStart = System.currentTimeMillis()
     // Prepare the xmi resource persistence
     val Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE
     val m = reg.extensionToFactoryMap
@@ -57,7 +60,9 @@ class Gdm2Columnar {
     )
     val gdm = inputResource.contents.get(0) as Model
     // Transform it
+    val start = System.currentTimeMillis()
     val columnFamilyDM = transformGdm2Columnar(gdm)
+    val end = System.currentTimeMillis()
     // Save the columnar data model
     val output = new File(
       String.format("../es.unican.istr.mortadelo.gdm.examples/columnFamily/%sCF.model",
@@ -71,7 +76,11 @@ class Gdm2Columnar {
     } catch (IOException e) {
       e.printStackTrace()
     }
+    val totalEnd = System.currentTimeMillis()
     println("Transformation finished")
+    println(String.format("Transformation time: %d ms", end - start))
+    println(String.format("Total time (read/write files and models): %d ms",
+        totalEnd - totalStart))
   }
 
   def static ColumnFamilyDataModel transformGdm2Columnar(Model gdm) {

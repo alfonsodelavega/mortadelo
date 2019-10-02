@@ -13,8 +13,10 @@ import org.eclipse.epsilon.eol.models.IRelativePathResolver
 class GenerateMongoDb {
   // Perform the code generation step
   def static void main(String[] args) {
-    val totalStart = System.currentTimeMillis()
     val example = "eCommerce"
+    println("MongoDB schema generation")
+    println(String.format("Example: %s", example))
+    val totalStart = System.currentTimeMillis()
     val resourcesFolder = "../es.unican.istr.mortadelo.gdm.examples/document"
     // Load the document data model
     val documentDataModel = new EmfModel()

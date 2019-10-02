@@ -31,8 +31,10 @@ class Gdm2Document {
 
   // Test the transformation below
   def static void main(String[] args) {
-    val totalStart = System.currentTimeMillis()
     val example = "eCommerce"
+    println("GDM to document logical model")
+    println(String.format("Example: %s", example))
+    val totalStart = System.currentTimeMillis()
     // Prepare the xmi resource persistence
     val Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE
     val m = reg.extensionToFactoryMap
