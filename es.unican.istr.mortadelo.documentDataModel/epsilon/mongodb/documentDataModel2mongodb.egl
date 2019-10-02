@@ -1,1 +1,60 @@
-Hello mongodb!
+[%
+  var ddm = documentDataModel!DocumentDataModel.all().first();
+  for (collection in ddm.collections) {
+%]
+db.createCollection("[%=collection.name%]", {
+  validator: {
+    $jsonSchema: {
+      [%=collection.root.generateField()%]
+    }
+  }
+})
+
+[%
+  }
+%]
+[%
+  /* Different field generators, depending on the type */
+  operation Document generateField() {
+%]
+    bsonType: "object",
+    properties: {
+[%
+    for (field in self.fields) {
+      field.generateField();
+    }
+%]
+    }
+[%
+  }
+
+  operation ArrayField generateField() {
+%]
+  [%=self.name%] : {
+    bsonType: "array",
+    items: {
+      [%=self.type.generateField()%]
+    }
+  }
+[%
+  }
+
+  operation PrimitiveField generateField() {
+%]
+  [%=self.name%] : {bsonType: "[%=self.getMongoDBType()%]"}
+[%
+  }
+
+  operation PrimitiveField getMongoDBType() {
+    switch (self.type.name) {
+      case "INT" : return "int";
+      case "FLOAT" : return "double";
+      case "TEXT" : return "string";
+      case "DATE" : return "date";
+      case "TIMESTAMP" : return "timestamp";
+      case "BOOLEAN" : return "boolean";
+      case "ID" : return "ObjectId";
+      default : return "string";
+    }
+  }
+%]

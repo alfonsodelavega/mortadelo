@@ -13,6 +13,7 @@ import org.eclipse.epsilon.eol.models.IRelativePathResolver
 class GenerateMongoDb {
   // Perform the code generation step
   def static void main(String[] args) {
+    val totalStart = System.currentTimeMillis()
     val example = "eCommerce"
     val resourcesFolder = "../es.unican.istr.mortadelo.gdm.examples/document"
     // Load the document data model
@@ -41,7 +42,9 @@ class GenerateMongoDb {
       return;
     }
     templateModule.getContext().getModelRepository().addModel(documentDataModel)
+    val start = System.currentTimeMillis()
     val result = templateModule.execute
+    val end = System.currentTimeMillis()
     templateModule.getContext().getModelRepository().dispose()
     // Print the results to a file
     val outputFile = new File(String.format("%s/%s.mongodb.json", resourcesFolder, example))
@@ -49,6 +52,10 @@ class GenerateMongoDb {
     val out = new PrintWriter(outputFile.canonicalPath)
     out.println(result)
     out.close
+    val totalEnd = System.currentTimeMillis()
     println("Generation finished")
+    println(String.format("Transformation time: %d ms", end - start))
+    println(String.format("Total time (read/write files and models): %d ms",
+        totalEnd - totalStart))
   }
 }

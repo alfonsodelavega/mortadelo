@@ -31,6 +31,7 @@ class Gdm2Document {
 
   // Test the transformation below
   def static void main(String[] args) {
+    val totalStart = System.currentTimeMillis()
     val example = "eCommerce"
     // Prepare the xmi resource persistence
     val Resource.Factory.Registry reg = Resource.Factory.Registry.INSTANCE
@@ -48,7 +49,9 @@ class Gdm2Document {
                                            true)
     val gdm = inputResource.contents.get(0) as Model
     // Transform it
+    val start = System.currentTimeMillis()
     val columnFamilyDM = transformGdm2Document(gdm)
+    val end = System.currentTimeMillis()
     // Save the obtained data model
     val output = new File(
       String.format("../es.unican.istr.mortadelo.gdm.examples/document/%sDOC.model",
@@ -61,7 +64,11 @@ class Gdm2Document {
     } catch (IOException e) {
       e.printStackTrace()
     }
+    val totalEnd = System.currentTimeMillis()
     println("Transformation finished")
+    println(String.format("Transformation time: %d ms", end - start))
+    println(String.format("Total time (read/write files and models): %d ms",
+        totalEnd - totalStart))
   }
 
   def static DocumentDataModel transformGdm2Document(Model gdm) {
