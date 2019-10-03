@@ -12,6 +12,7 @@
       <genEnumLiterals ecoreEnumLiteral="GdmLang.ecore#//Type/DATE"/>
       <genEnumLiterals ecoreEnumLiteral="GdmLang.ecore#//Type/BOOLEAN"/>
       <genEnumLiterals ecoreEnumLiteral="GdmLang.ecore#//Type/ID"/>
+      <genEnumLiterals ecoreEnumLiteral="GdmLang.ecore#//Type/TIMESTAMP"/>
     </genEnums>
     <genClasses ecoreClass="GdmLang.ecore#//Model">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Model/entities"/>
@@ -27,14 +28,15 @@
     <genClasses ecoreClass="GdmLang.ecore#//Entity">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Entity/features"/>
     </genClasses>
-    <genClasses ecoreClass="GdmLang.ecore#//Feature"/>
+    <genClasses ecoreClass="GdmLang.ecore#//Feature">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GdmLang.ecore#//Feature/cardinality"/>
+    </genClasses>
     <genClasses ecoreClass="GdmLang.ecore#//Attribute">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GdmLang.ecore#//Attribute/type"/>
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GdmLang.ecore#//Attribute/unique"/>
     </genClasses>
     <genClasses ecoreClass="GdmLang.ecore#//Reference">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Reference/entity"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute GdmLang.ecore#//Reference/cardinality"/>
     </genClasses>
     <genClasses ecoreClass="GdmLang.ecore#//Query">
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference GdmLang.ecore#//Query/projections"/>

@@ -27,7 +27,7 @@ Feature:
 
 Attribute:
   (annotations+=Annotation (annotations+=Annotation)*)?
-  (type=Type)? name=ID (unique?="unique")?;
+  (type=Type)?("[" cardinality=CARDINALITY "]")? name=ID (unique?="unique")?;
 
 Reference:
   (annotations+=Annotation (annotations+=Annotation)*)?
@@ -39,7 +39,8 @@ terminal CARDINALITY returns ecore::EString:
   "*" | ('1'..'9') ('0'..'9')*;
 
 enum Type:
-  NUMBER="number" | TEXT="text" | DATE="date" | BOOLEAN="boolean" | ID="id";
+  NUMBER="number" | TEXT="text" | DATE="date" | BOOLEAN="boolean" | ID="id" |
+  TIMESTAMP="timestamp";
 
 Query:
   (annotations+=Annotation (annotations+=Annotation)*)?

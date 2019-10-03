@@ -336,6 +336,9 @@ class Gdm2Columnar {
       case DATE: {
         st.type = PrimitiveType.DATE
       }
+      case TIMESTAMP: {
+        st.type = PrimitiveType.TIMESTAMP
+      }
       default: {
         st.type = PrimitiveType.TEXT
       }

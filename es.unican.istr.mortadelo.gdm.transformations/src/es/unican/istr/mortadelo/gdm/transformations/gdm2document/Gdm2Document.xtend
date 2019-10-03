@@ -206,6 +206,8 @@ class Gdm2Document {
         return PrimitiveType.FLOAT
       case DATE:
         return PrimitiveType.DATE
+      case TIMESTAMP:
+        return PrimitiveType.TIMESTAMP
       case BOOLEAN:
         return PrimitiveType.BOOLEAN
       default:
