@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="ASCII"?>
+<gdmLang:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gdmLang="http://www.unican.es/istr/mortadelo/gdm/lang/GdmLang">
+  <entities name="State">
+    <features xsi:type="gdmLang:Attribute" name="stateId" type="id" unique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="posX"/>
+    <features xsi:type="gdmLang:Attribute" name="posY"/>
+    <features xsi:type="gdmLang:Attribute" name="posZ"/>
+    <features xsi:type="gdmLang:Attribute" name="serverTimestamp" type="timestamp"/>
+  </entities>
+  <entities name="Player">
+    <features xsi:type="gdmLang:Attribute" name="playerId" type="id" unique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="playerName" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="playerFrags" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="isAdmin" type="boolean"/>
+  </entities>
+  <entities name="Session">
+    <features xsi:type="gdmLang:Attribute" name="sessionId" type="id" unique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="timeStarted" type="timestamp"/>
+    <features xsi:type="gdmLang:Attribute" name="timeEnded" type="timestamp"/>
+    <features xsi:type="gdmLang:Reference" name="states" entity="//@entities.0" cardinality="*"/>
+    <features xsi:type="gdmLang:Reference" name="player" entity="//@entities.1" cardinality="1"/>
+  </entities>
+  <entities name="Server">
+    <features xsi:type="gdmLang:Attribute" name="serverId" type="id" unique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="serverName" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="serverIP" type="text"/>
+    <features xsi:type="gdmLang:Reference" name="sessions" entity="//@entities.2" cardinality="*"/>
+  </entities>
+  <queries name="Q1_latestStateOfAPlayer">
+    <projections refAlias="//@queries.0/@inclusions.2/@alias" attribute="//@entities.0/@features.1"/>
+    <projections refAlias="//@queries.0/@inclusions.2/@alias" attribute="//@entities.0/@features.2"/>
+    <projections refAlias="//@queries.0/@inclusions.2/@alias" attribute="//@entities.0/@features.3"/>
+    <projections refAlias="//@queries.0/@inclusions.2/@alias" attribute="//@entities.0/@features.4"/>
+    <from entity="//@entities.3">
+      <alias name="server"/>
+    </from>
+    <inclusions refAlias="//@queries.0/@from/@alias" refs="//@entities.3/@features.3">
+      <alias name="sessions"/>
+    </inclusions>
+    <inclusions refAlias="//@queries.0/@from/@alias" refs="//@entities.3/@features.3 //@entities.2/@features.4">
+      <alias name="player"/>
+    </inclusions>
+    <inclusions refAlias="//@queries.0/@inclusions.0/@alias" refs="//@entities.2/@features.3">
+      <alias name="states"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:AndConjunction">
+      <left xsi:type="gdmLang:Equality" value="?">
+        <selection refAlias="//@queries.0/@from/@alias" attribute="//@entities.3/@features.0"/>
+      </left>
+      <right xsi:type="gdmLang:Equality" value="?">
+        <selection refAlias="//@queries.0/@inclusions.1/@alias" attribute="//@entities.1/@features.0"/>
+      </right>
+    </condition>
+    <orderingAttributes refAlias="//@queries.0/@inclusions.2/@alias" attribute="//@entities.0/@features.4"/>
+  </queries>
+  <queries name="Q2_latestStateOfAllPlayers">
+    <projections refAlias="//@queries.1/@inclusions.2/@alias" attribute="//@entities.0/@features.1"/>
+    <projections refAlias="//@queries.1/@inclusions.2/@alias" attribute="//@entities.0/@features.2"/>
+    <projections refAlias="//@queries.1/@inclusions.2/@alias" attribute="//@entities.0/@features.3"/>
+    <projections refAlias="//@queries.1/@inclusions.2/@alias" attribute="//@entities.0/@features.4"/>
+    <projections refAlias="//@queries.1/@inclusions.1/@alias" attribute="//@entities.1/@features.0"/>
+    <from entity="//@entities.3">
+      <alias name="server"/>
+    </from>
+    <inclusions refAlias="//@queries.1/@from/@alias" refs="//@entities.3/@features.3">
+      <alias name="sessions"/>
+    </inclusions>
+    <inclusions refAlias="//@queries.1/@from/@alias" refs="//@entities.3/@features.3 //@entities.2/@features.4">
+      <alias name="player"/>
+    </inclusions>
+    <inclusions refAlias="//@queries.1/@inclusions.0/@alias" refs="//@entities.2/@features.3">
+      <alias name="states"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:AndConjunction">
+      <left xsi:type="gdmLang:Equality" value="?">
+        <selection refAlias="//@queries.1/@from/@alias" attribute="//@entities.3/@features.0"/>
+      </left>
+      <right xsi:type="gdmLang:Equality" value="false">
+        <selection refAlias="//@queries.1/@inclusions.1/@alias" attribute="//@entities.1/@features.3"/>
+      </right>
+    </condition>
+    <orderingAttributes refAlias="//@queries.1/@inclusions.2/@alias" attribute="//@entities.0/@features.4"/>
+  </queries>
+  <queries name="Q3_serverInfo">
+    <projections refAlias="//@queries.2/@from/@alias" attribute="//@entities.3/@features.1"/>
+    <projections refAlias="//@queries.2/@from/@alias" attribute="//@entities.3/@features.2"/>
+    <from entity="//@entities.3">
+      <alias name="server"/>
+    </from>
+    <condition xsi:type="gdmLang:Equality" value="?">
+      <selection refAlias="//@queries.2/@from/@alias" attribute="//@entities.3/@features.0"/>
+    </condition>
+  </queries>
+  <queries name="Q4_checkServer">
+    <projections refAlias="//@queries.3/@from/@alias" attribute="//@entities.3/@features.0"/>
+    <from entity="//@entities.3">
+      <alias name="server"/>
+    </from>
+    <condition xsi:type="gdmLang:Equality" value="?">
+      <selection refAlias="//@queries.3/@from/@alias" attribute="//@entities.3/@features.0"/>
+    </condition>
+  </queries>
+  <queries name="Q5_playerSessions">
+    <projections refAlias="//@queries.4/@from/@alias" attribute="//@entities.2/@features.0"/>
+    <from entity="//@entities.2">
+      <alias name="session"/>
+    </from>
+    <inclusions refAlias="//@queries.4/@from/@alias" refs="//@entities.2/@features.4">
+      <alias name="player"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:Equality" value="?">
+      <selection refAlias="//@queries.4/@inclusions.0/@alias" attribute="//@entities.1/@features.0"/>
+    </condition>
+  </queries>
+</gdmLang:Model>

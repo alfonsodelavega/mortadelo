@@ -1,0 +1,84 @@
+/*
+ * EasyAntiCheat case study
+ *
+ * Extracted from:
+ *
+ * M. J. Mior, K. Salem, A. Aboulnaga and R. Liu. "NoSE: Schema
+ * Design for NoSQL Applications", IEEE Transactions on Knowledge and
+ * Data Engineering 29: 2275–2289, 2017.
+ */
+
+/***********************/
+/* Entities definition */
+/***********************/
+
+entity State {
+  id stateId unique
+  number posX
+  number posY
+  number posZ
+  timestamp serverTimestamp
+}
+
+entity Player {
+  id playerId unique
+  text playerName
+  text playerFrags
+  boolean isAdmin
+}
+
+entity Session {
+  id sessionId unique
+  timestamp timeStarted
+  timestamp timeEnded
+  ref State[*] states
+  ref Player[1] player
+}
+
+entity Server {
+  id serverId unique
+  text serverName
+  text serverIP
+  ref Session[*] sessions
+}
+
+/**********************/
+/* Queries definition */
+/**********************/
+
+query Q1_latestStateOfAPlayer:
+  select states.posX, states.posY, states.posZ, states.serverTimestamp
+  from Server as server
+  including server.sessions as sessions,
+            server.sessions.player as player,
+            sessions.states as states
+  where server.serverId = "?"
+    and player.playerId = "?"
+  order by states.serverTimestamp
+
+query Q2_latestStateOfAllPlayers:
+  select states.posX, states.posY, states.posZ, states.serverTimestamp,
+         player.playerId
+  from Server as server
+  including server.sessions as sessions,
+            server.sessions.player as player,
+            sessions.states as states
+  where server.serverId = "?"
+    and player.isAdmin = "false"
+  order by states.serverTimestamp
+
+query Q3_serverInfo:
+  select server.serverName, server.serverIP
+  from Server as server
+  where server.serverId = "?"
+
+query Q4_checkServer:
+  select server.serverId
+  from Server as server
+  where server.serverId = "?"
+
+query Q5_playerSessions:
+  select session.sessionId
+  from Session as session
+  including session.player as player
+  where player.playerId = "?"

@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="ASCII"?>
+<gdmLang:Model xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:gdmLang="http://www.unican.es/istr/mortadelo/gdm/lang/GdmLang">
+  <entities name="User">
+    <features xsi:type="gdmLang:Attribute" name="userId" type="id" unique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="userName" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="userEmail" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="areasOfExpertise" cardinality="*" type="text"/>
+    <features xsi:type="gdmLang:Reference" name="reviews" cardinality="*" entity="//@entities.3"/>
+    <features xsi:type="gdmLang:Reference" name="likesArtifacts" cardinality="*" entity="//@entities.2"/>
+    <features xsi:type="gdmLang:Reference" name="likesVenue" cardinality="*" entity="//@entities.1"/>
+  </entities>
+  <entities name="Venue">
+    <features xsi:type="gdmLang:Attribute" name="venueId" type="id" unique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="venueName" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="year"/>
+    <features xsi:type="gdmLang:Attribute" name="country" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="homepage" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="topics" cardinality="*" type="text"/>
+    <features xsi:type="gdmLang:Reference" name="artifacts" cardinality="*" entity="//@entities.2"/>
+  </entities>
+  <entities name="Artifact">
+    <features xsi:type="gdmLang:Attribute" name="artifactId" type="id" unique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="artifactTitle" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="authors" cardinality="*" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="keywords" cardinality="*" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="numRatings"/>
+    <features xsi:type="gdmLang:Attribute" name="sumRatings"/>
+    <features xsi:type="gdmLang:Attribute" name="avgRating"/>
+    <features xsi:type="gdmLang:Reference" name="venue" cardinality="1" entity="//@entities.1"/>
+  </entities>
+  <entities name="Review">
+    <features xsi:type="gdmLang:Attribute" name="reviewId" type="id" unique="true"/>
+    <features xsi:type="gdmLang:Attribute" name="reviewTitle" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="body" type="text"/>
+    <features xsi:type="gdmLang:Attribute" name="rating"/>
+    <features xsi:type="gdmLang:Reference" name="artifact" cardinality="1" entity="//@entities.2"/>
+  </entities>
+  <queries name="Q1_artifactsByVenue">
+    <projections refAlias="//@queries.0/@from/@alias" attribute="//@entities.1/@features.1"/>
+    <projections refAlias="//@queries.0/@from/@alias" attribute="//@entities.1/@features.2"/>
+    <projections refAlias="//@queries.0/@inclusions.0/@alias" attribute="//@entities.2/@features.0"/>
+    <projections refAlias="//@queries.0/@inclusions.0/@alias" attribute="//@entities.2/@features.1"/>
+    <projections refAlias="//@queries.0/@inclusions.0/@alias" attribute="//@entities.2/@features.6"/>
+    <projections refAlias="//@queries.0/@inclusions.0/@alias" attribute="//@entities.2/@features.2"/>
+    <projections refAlias="//@queries.0/@inclusions.0/@alias" attribute="//@entities.2/@features.3"/>
+    <from entity="//@entities.1">
+      <alias name="venue"/>
+    </from>
+    <inclusions refAlias="//@queries.0/@from/@alias" refs="//@entities.1/@features.6">
+      <alias name="artifacts"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:AndConjunction">
+      <left xsi:type="gdmLang:Equality" value="?">
+        <selection refAlias="//@queries.0/@from/@alias" attribute="//@entities.1/@features.1"/>
+      </left>
+      <right xsi:type="gdmLang:MoreThan" value="?">
+        <selection refAlias="//@queries.0/@from/@alias" attribute="//@entities.1/@features.2"/>
+      </right>
+    </condition>
+  </queries>
+  <queries name="Q2_artifactsByAuthor">
+    <projections refAlias="//@queries.1/@from/@alias" attribute="//@entities.2/@features.0"/>
+    <projections refAlias="//@queries.1/@from/@alias" attribute="//@entities.2/@features.1"/>
+    <projections refAlias="//@queries.1/@from/@alias" attribute="//@entities.2/@features.6"/>
+    <projections refAlias="//@queries.1/@from/@alias" attribute="//@entities.2/@features.2"/>
+    <projections refAlias="//@queries.1/@from/@alias" attribute="//@entities.2/@features.3"/>
+    <projections refAlias="//@queries.1/@from/@alias" attribute="//@entities.2/@features.2" alias="author"/>
+    <from entity="//@entities.2">
+      <alias name="artifact"/>
+    </from>
+    <condition xsi:type="gdmLang:Equality" value="?">
+      <selection refAlias="//@queries.1/@from/@alias" attribute="//@entities.2/@features.2"/>
+    </condition>
+  </queries>
+  <queries name="Q3_usersByLikedArtifact">
+    <projections refAlias="//@queries.2/@from/@alias" attribute="//@entities.0/@features.0"/>
+    <projections refAlias="//@queries.2/@from/@alias" attribute="//@entities.0/@features.1"/>
+    <projections refAlias="//@queries.2/@from/@alias" attribute="//@entities.0/@features.2"/>
+    <from entity="//@entities.0">
+      <alias name="user"/>
+    </from>
+    <inclusions refAlias="//@queries.2/@from/@alias" refs="//@entities.0/@features.5">
+      <alias name="artifacts"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:Equality" value="?">
+      <selection refAlias="//@queries.2/@inclusions.0/@alias" attribute="//@entities.2/@features.0"/>
+    </condition>
+  </queries>
+  <queries name="Q4_expertsByLikedArtifact">
+    <projections refAlias="//@queries.3/@from/@alias" attribute="//@entities.0/@features.0"/>
+    <projections refAlias="//@queries.3/@from/@alias" attribute="//@entities.0/@features.3"/>
+    <projections refAlias="//@queries.3/@from/@alias" attribute="//@entities.0/@features.1"/>
+    <projections refAlias="//@queries.3/@from/@alias" attribute="//@entities.0/@features.2"/>
+    <projections refAlias="//@queries.3/@from/@alias" attribute="//@entities.0/@features.3" alias="areaOfExpertise"/>
+    <from entity="//@entities.0">
+      <alias name="user"/>
+    </from>
+    <inclusions refAlias="//@queries.3/@from/@alias" refs="//@entities.0/@features.5">
+      <alias name="artifacts"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:AndConjunction">
+      <left xsi:type="gdmLang:Equality" value="?">
+        <selection refAlias="//@queries.3/@inclusions.0/@alias" attribute="//@entities.2/@features.0"/>
+      </left>
+      <right xsi:type="gdmLang:Equality" value="?">
+        <selection refAlias="//@queries.3/@from/@alias" attribute="//@entities.0/@features.3"/>
+      </right>
+    </condition>
+  </queries>
+  <queries name="Q5_ratingByArtifact">
+    <projections refAlias="//@queries.4/@from/@alias" attribute="//@entities.2/@features.0"/>
+    <projections refAlias="//@queries.4/@from/@alias" attribute="//@entities.2/@features.6"/>
+    <from entity="//@entities.2">
+      <alias name="artifact"/>
+    </from>
+    <condition xsi:type="gdmLang:Equality" value="?">
+      <selection refAlias="//@queries.4/@from/@alias" attribute="//@entities.2/@features.0"/>
+    </condition>
+  </queries>
+  <queries name="Q6_venuesLikedByUser">
+    <projections refAlias="//@queries.5/@from/@alias" attribute="//@entities.0/@features.0"/>
+    <projections refAlias="//@queries.5/@inclusions.0/@alias" attribute="//@entities.1/@features.1"/>
+    <projections refAlias="//@queries.5/@inclusions.0/@alias" attribute="//@entities.1/@features.2"/>
+    <projections refAlias="//@queries.5/@inclusions.0/@alias" attribute="//@entities.1/@features.3"/>
+    <projections refAlias="//@queries.5/@inclusions.0/@alias" attribute="//@entities.1/@features.4"/>
+    <from entity="//@entities.0">
+      <alias name="user"/>
+    </from>
+    <inclusions refAlias="//@queries.5/@from/@alias" refs="//@entities.0/@features.6">
+      <alias name="venues"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:Equality" value="?">
+      <selection refAlias="//@queries.5/@from/@alias" attribute="//@entities.0/@features.0"/>
+    </condition>
+  </queries>
+  <queries name="Q7_artifactsLikedByUser">
+    <projections refAlias="//@queries.6/@from/@alias" attribute="//@entities.0/@features.0"/>
+    <projections refAlias="//@queries.6/@inclusions.0/@alias" attribute="//@entities.2/@features.0"/>
+    <projections refAlias="//@queries.6/@inclusions.0/@alias" attribute="//@entities.2/@features.1"/>
+    <projections refAlias="//@queries.6/@inclusions.0/@alias" attribute="//@entities.2/@features.2"/>
+    <projections refAlias="//@queries.6/@inclusions.1/@alias" attribute="//@entities.1/@features.1"/>
+    <from entity="//@entities.0">
+      <alias name="user"/>
+    </from>
+    <inclusions refAlias="//@queries.6/@from/@alias" refs="//@entities.0/@features.5">
+      <alias name="likesArtifacts"/>
+    </inclusions>
+    <inclusions refAlias="//@queries.6/@from/@alias" refs="//@entities.0/@features.5 //@entities.2/@features.7">
+      <alias name="venue"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:AndConjunction">
+      <left xsi:type="gdmLang:Equality" value="?">
+        <selection refAlias="//@queries.6/@from/@alias" attribute="//@entities.0/@features.0"/>
+      </left>
+      <right xsi:type="gdmLang:MoreThan" value="?">
+        <selection refAlias="//@queries.6/@inclusions.1/@alias" attribute="//@entities.1/@features.2"/>
+      </right>
+    </condition>
+  </queries>
+  <queries name="Q8_reviewsByUser">
+    <projections refAlias="//@queries.7/@from/@alias" attribute="//@entities.0/@features.0"/>
+    <projections refAlias="//@queries.7/@inclusions.0/@alias" attribute="//@entities.3/@features.0"/>
+    <projections refAlias="//@queries.7/@inclusions.0/@alias" attribute="//@entities.3/@features.1"/>
+    <projections refAlias="//@queries.7/@inclusions.0/@alias" attribute="//@entities.3/@features.2"/>
+    <projections refAlias="//@queries.7/@inclusions.1/@alias" attribute="//@entities.2/@features.0"/>
+    <projections refAlias="//@queries.7/@inclusions.1/@alias" attribute="//@entities.2/@features.1"/>
+    <from entity="//@entities.0">
+      <alias name="user"/>
+    </from>
+    <inclusions refAlias="//@queries.7/@from/@alias" refs="//@entities.0/@features.4">
+      <alias name="reviews"/>
+    </inclusions>
+    <inclusions refAlias="//@queries.7/@from/@alias" refs="//@entities.0/@features.4 //@entities.3/@features.4">
+      <alias name="artifact"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:AndConjunction">
+      <left xsi:type="gdmLang:Equality" value="?">
+        <selection refAlias="//@queries.7/@from/@alias" attribute="//@entities.0/@features.0"/>
+      </left>
+      <right xsi:type="gdmLang:MoreThan" value="?">
+        <selection refAlias="//@queries.7/@inclusions.0/@alias" attribute="//@entities.3/@features.3"/>
+      </right>
+    </condition>
+  </queries>
+  <queries name="Q9_artifacts">
+    <projections refAlias="//@queries.8/@from/@alias" attribute="//@entities.2/@features.0"/>
+    <projections refAlias="//@queries.8/@from/@alias" attribute="//@entities.2/@features.1"/>
+    <projections refAlias="//@queries.8/@from/@alias" attribute="//@entities.2/@features.6"/>
+    <projections refAlias="//@queries.8/@from/@alias" attribute="//@entities.2/@features.2"/>
+    <projections refAlias="//@queries.8/@from/@alias" attribute="//@entities.2/@features.3"/>
+    <projections refAlias="//@queries.8/@inclusions.0/@alias" attribute="//@entities.1/@features.1"/>
+    <from entity="//@entities.2">
+      <alias name="artifact"/>
+    </from>
+    <inclusions refAlias="//@queries.8/@from/@alias" refs="//@entities.2/@features.7">
+      <alias name="venue"/>
+    </inclusions>
+    <condition xsi:type="gdmLang:Equality" value="?">
+      <selection refAlias="//@queries.8/@from/@alias" attribute="//@entities.2/@features.0"/>
+    </condition>
+  </queries>
+</gdmLang:Model>

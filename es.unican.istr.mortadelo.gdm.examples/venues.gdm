@@ -1,0 +1,126 @@
+/*
+ * Venues case study
+ *
+ * Extracted from:
+ *
+ * A. Chebotko, A. Kashlev and S. Lu. "A Big Data Modeling
+ * Methodology for Apache Cassandra". Proc. of the International
+ * Congress on Big Data , 2015.
+ */
+
+/***********************/
+/* Entities definition */
+/***********************/
+
+entity User {
+  id userId unique
+  text userName
+  text userEmail
+  text[*] areasOfExpertise
+  ref Review[*] reviews
+  ref Artifact[*] likesArtifacts
+  ref Venue[*] likesVenue
+}
+
+entity Venue {
+  id venueId unique
+  text venueName
+  number year
+  text country
+  text homepage
+  text[*] topics
+  ref Artifact[*] artifacts
+}
+
+entity Artifact {
+  id artifactId unique
+  text artifactTitle
+  text[*] authors
+  text[*] keywords
+  number numRatings
+  number sumRatings
+  number avgRating
+  ref Venue[1] venue
+}
+
+entity Review {
+  id reviewId unique
+  text reviewTitle
+  text body
+  number rating
+  ref Artifact[1] artifact
+}
+
+/**********************/
+/* Queries definition */
+/**********************/
+
+query Q1_artifactsByVenue:
+  select venue.venueName, venue.year,
+         artifacts.artifactId, artifacts.artifactTitle, artifacts.avgRating,
+         artifacts.authors, artifacts.keywords
+  from Venue as venue
+  including venue.artifacts as artifacts
+  where venue.venueName = "?"
+    and venue.year > "?"
+
+query Q2_artifactsByAuthor:
+  select artifact.artifactId, artifact.artifactTitle, artifact.avgRating,
+         artifact.authors, artifact.keywords, artifact.authors as author
+  from Artifact as artifact
+  where artifact.authors = "?"
+
+query Q3_usersByLikedArtifact:
+  select user.userId, user.userName, user.userEmail
+  from User as user
+  including user.likesArtifacts as artifacts
+  where artifacts.artifactId = "?"
+
+query Q4_expertsByLikedArtifact:
+  select user.userId, user.areasOfExpertise, user.userName, user.userEmail,
+         user.areasOfExpertise as areaOfExpertise
+  from User as user
+  including user.likesArtifacts as artifacts
+  where artifacts.artifactId = "?"
+    and user.areasOfExpertise = "?"
+
+query Q5_ratingByArtifact:
+  select artifact.artifactId, artifact.avgRating
+  from Artifact as artifact
+  where artifact.artifactId = "?"
+
+query Q6_venuesLikedByUser:
+  select user.userId, venues.venueName, venues.year,
+         venues.country, venues.homepage
+  from User as user
+  including user.likesVenue as venues
+  where user.userId = "?"
+
+query Q7_artifactsLikedByUser:
+  select user.userId,
+         likesArtifacts.artifactId,
+         likesArtifacts.artifactTitle, likesArtifacts.authors,
+         venue.venueName
+  from User as user
+  including user.likesArtifacts as likesArtifacts,
+            user.likesArtifacts.venue as venue
+  where user.userId = "?"
+    and venue.year > "?"
+
+query Q8_reviewsByUser:
+  select user.userId,
+         reviews.reviewId, reviews.reviewTitle, reviews.body,
+         artifact.artifactId, artifact.artifactTitle
+  from User as user
+  including user.reviews as reviews,
+            user.reviews.artifact as artifact
+  where user.userId = "?"
+    and reviews.rating > "?"
+
+query Q9_artifacts:
+  select artifact.artifactId, artifact.artifactTitle, artifact.avgRating,
+         artifact.authors, artifact.keywords,
+         venue.venueName
+  from Artifact as artifact
+  including artifact.venue as venue
+  where artifact.artifactId = "?"

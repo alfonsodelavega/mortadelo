@@ -1,0 +1,126 @@
+/*
+ * Online store case study
+ *
+ * Extracted from:
+ *
+ * C. de Lima and R. dos Santos Mello. "A workload-driven logical
+ * design approach for NoSQL document databases". Proc. of the 17th
+ * International Conference on Information Integration and Web-based
+ * Applications & Services (iiWAS), 2015.
+ */
+
+/***********************/
+/* Entities definition */
+/***********************/
+
+entity Customer {
+  id customerId unique
+  text name
+  text[*] contacts
+  text[*] address
+  ref Order[*] orders
+}
+
+entity Order {
+  id orderNumber unique
+  date saleDate
+  number totalPrice
+  ref Payment[1] payment
+  ref Item[*] items
+  ref Delivery[1] delivery
+}
+
+entity Delivery {
+  date deliveryDate
+  ref Carrier[1] carrier
+}
+
+entity Payment {
+  id paymentCode unique
+  date paymentDate
+  text cardNumber
+}
+
+entity Item {
+  number itemNumber
+  number quantity
+  ref Product[1] product
+}
+
+entity Product {
+  id productCode unique
+  text price
+  ref Category[1] category
+  ref Supplier[1] supplier
+}
+
+entity Category {
+  id categoryId unique
+  text description
+}
+
+entity Carrier {
+  id carrierId unique
+  text name
+  text[*] contacts
+  text[*] address
+}
+
+entity Supplier {
+  id supplierId unique
+  text name
+  text[*] contacts
+  text[*] address
+}
+
+/**********************/
+/* Queries definition */
+/**********************/
+
+query Q1_allOrdersOfCustomer:
+  select customer.customerId, customer.name,
+         orders.saleDate, orders.totalPrice,
+         items.itemNumber, items.quantity, product.productCode
+  from Customer as customer
+  including customer.orders as orders,
+            customer.orders.items as items,
+            customer.orders.items.product as product
+  where customer.customerId = "?"
+
+query Q2_allOrdersOfCustomerWithPayment:
+  select customer.customerId, customer.name,
+         orders.saleDate, orders.totalPrice,
+         payment.paymentCode, payment.paymentDate, payment.cardNumber
+  from Customer as customer
+  including customer.orders as orders,
+            customer.orders.payment as payment
+  where customer.customerId = "?"
+
+query Q3_allOrdersOfCustomerWithCarrier:
+  select customer.customerId, customer.name,
+         orders.saleDate, orders.totalPrice,
+         delivery.deliveryDate, carrier.carrierId
+  from Customer as customer
+  including customer.orders as orders,
+            customer.orders.delivery as delivery,
+            customer.orders.delivery.carrier as carrier
+  where customer.customerId = "?"
+
+query Q4_allProductsOfCategory:
+  select product.productCode, product.price
+  from Product as product
+  including product.category as category
+  where category.categoryId = "?"
+
+query Q5_allProductsOfSupplier:
+  select product.productCode, product.price
+  from Product as product
+  including product.supplier as supplier
+  where supplier.supplierId = "?"
+
+query Q6_productInformation:
+  select product.productCode, product.price
+  from Product as product
+  including product.category as category,
+            product.supplier as supplier
+  where product.productCode = "?"
