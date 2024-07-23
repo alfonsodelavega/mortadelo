@@ -17,14 +17,14 @@
     <features xsi:type="gdmLang:Attribute" name="sessionId" type="id" unique="true"/>
     <features xsi:type="gdmLang:Attribute" name="timeStarted" type="timestamp"/>
     <features xsi:type="gdmLang:Attribute" name="timeEnded" type="timestamp"/>
-    <features xsi:type="gdmLang:Reference" name="states" entity="//@entities.0" cardinality="*"/>
-    <features xsi:type="gdmLang:Reference" name="player" entity="//@entities.1" cardinality="1"/>
+    <features xsi:type="gdmLang:Reference" name="states" cardinality="*" entity="//@entities.0"/>
+    <features xsi:type="gdmLang:Reference" name="player" cardinality="1" entity="//@entities.1"/>
   </entities>
   <entities name="Server">
     <features xsi:type="gdmLang:Attribute" name="serverId" type="id" unique="true"/>
     <features xsi:type="gdmLang:Attribute" name="serverName" type="text"/>
     <features xsi:type="gdmLang:Attribute" name="serverIP" type="text"/>
-    <features xsi:type="gdmLang:Reference" name="sessions" entity="//@entities.2" cardinality="*"/>
+    <features xsi:type="gdmLang:Reference" name="sessions" cardinality="*" entity="//@entities.2"/>
   </entities>
   <queries name="Q1_latestStateOfAPlayer">
     <projections refAlias="//@queries.0/@inclusions.2/@alias" attribute="//@entities.0/@features.1"/>

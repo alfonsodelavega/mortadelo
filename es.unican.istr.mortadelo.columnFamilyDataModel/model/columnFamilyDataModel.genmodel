@@ -15,17 +15,23 @@
       <genEnumLiterals ecoreEnumLiteral="columnFamilyDataModel.ecore#//PrimitiveType/ID"/>
       <genEnumLiterals ecoreEnumLiteral="columnFamilyDataModel.ecore#//PrimitiveType/BOOLEAN"/>
     </genEnums>
-    <genClasses ecoreClass="columnFamilyDataModel.ecore#//DataModel">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference columnFamilyDataModel.ecore#//DataModel/columnFamilies"/>
+    <genClasses ecoreClass="columnFamilyDataModel.ecore#//ColumnFamilyDataModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference columnFamilyDataModel.ecore#//ColumnFamilyDataModel/tables"/>
     </genClasses>
     <genClasses ecoreClass="columnFamilyDataModel.ecore#//ColumnFamily">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute columnFamilyDataModel.ecore#//ColumnFamily/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference columnFamilyDataModel.ecore#//ColumnFamily/columns"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference columnFamilyDataModel.ecore#//ColumnFamily/keys"/>
+    </genClasses>
+    <genClasses ecoreClass="columnFamilyDataModel.ecore#//Table">
+      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute columnFamilyDataModel.ecore#//Table/name"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference columnFamilyDataModel.ecore#//Table/columnFamilies"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference columnFamilyDataModel.ecore#//Table/columns"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference columnFamilyDataModel.ecore#//Table/partitionKeys"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference columnFamilyDataModel.ecore#//Table/clusteringKeys"/>
     </genClasses>
     <genClasses ecoreClass="columnFamilyDataModel.ecore#//Column">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute columnFamilyDataModel.ecore#//Column/name"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference columnFamilyDataModel.ecore#//Column/type"/>
+      <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference columnFamilyDataModel.ecore#//Column/columnFamily"/>
     </genClasses>
     <genClasses image="false" ecoreClass="columnFamilyDataModel.ecore#//Type"/>
     <genClasses ecoreClass="columnFamilyDataModel.ecore#//SimpleType">
@@ -52,7 +58,6 @@
     </genClasses>
     <genClasses ecoreClass="columnFamilyDataModel.ecore#//Key">
       <genFeatures notify="false" createChild="false" propertySortChoices="true" ecoreFeature="ecore:EReference columnFamilyDataModel.ecore#//Key/column"/>
-      <genFeatures createChild="false" ecoreFeature="ecore:EAttribute columnFamilyDataModel.ecore#//Key/position"/>
     </genClasses>
     <genClasses ecoreClass="columnFamilyDataModel.ecore#//PartitionKey"/>
     <genClasses ecoreClass="columnFamilyDataModel.ecore#//ClusteringKey"/>

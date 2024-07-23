@@ -15,12 +15,12 @@
       <genEnumLiterals ecoreEnumLiteral="documentDataModel.ecore#//PrimitiveType/BOOLEAN"/>
       <genEnumLiterals ecoreEnumLiteral="documentDataModel.ecore#//PrimitiveType/ID"/>
     </genEnums>
-    <genClasses ecoreClass="documentDataModel.ecore#//DataModel">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference documentDataModel.ecore#//DataModel/collections"/>
+    <genClasses ecoreClass="documentDataModel.ecore#//DocumentDataModel">
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference documentDataModel.ecore#//DocumentDataModel/collections"/>
     </genClasses>
     <genClasses ecoreClass="documentDataModel.ecore#//Collection">
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute documentDataModel.ecore#//Collection/name"/>
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference documentDataModel.ecore#//Collection/document"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference documentDataModel.ecore#//Collection/root"/>
       <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference documentDataModel.ecore#//Collection/indexes"/>
     </genClasses>
     <genClasses image="false" ecoreClass="documentDataModel.ecore#//Field">
@@ -37,7 +37,7 @@
       <genFeatures createChild="false" ecoreFeature="ecore:EAttribute documentDataModel.ecore#//PrimitiveField/type"/>
     </genClasses>
     <genClasses ecoreClass="documentDataModel.ecore#//ArrayField">
-      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference documentDataModel.ecore#//ArrayField/types"/>
+      <genFeatures property="None" children="true" createChild="true" ecoreFeature="ecore:EReference documentDataModel.ecore#//ArrayField/type"/>
     </genClasses>
   </genPackages>
 </genmodel:GenModel>
